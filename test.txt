@@ -1,0 +1,76 @@
+Aquí encuentras información general de los títulos del mercado de renta fija de bvc.
+Estadísticas en los sistemas transaccionales
+Mercado cerrado
+Retraso 15 minutos
+Estos son los precios, sus variaciones y las estadísticas puntuales que te permiten comprender el estado de este título en el mercado por el sistema transaccional de renta fija. No se incluyen las operaciones de registro (OTC), para ver todas las operaciones históricas click en el tab de operaciones.
+Última negociación: 2024/01/25 10:35:17
+Tasa
+Tasa apertura
+-
+Última tasa
+-
+Tasa Máxima
+-
+Tasa Mínima
+-
+Cantidad
+-
+Volumen*
+-
+Variación pbs
+-
+Tasa Promedio Ponderada
+-
+Tasa de referencia: 10.200
+*Millones de pesos
+Detalle de este título
+Conoce las características faciales e información general de este título.
+Nemotécnico
+TFIT21280542
+Código Superfinanciera
+COL08TTTF004
+ISIN
+COL17CT03813
+Código CFI
+DBFTFR
+Clase de título
+TITULOS TES
+Descripción
+TITULOS TES
+Base
+365.0
+Fecha de emisión
+2021/05/28
+Fecha de vencimiento
+2042/05/28
+Periodicidad
+Anual Vencida
+Tasa facial
+9.25
+Tipo de tasa*
+Nominal
+Índice
+FS
+Uso Índice
+-
+Serie de emisión
+TSTOTALD0002
+Saldo autorizado
+-
+Valor emitido
+-
+Saldo vigente
+0
+Lote mínimo
+500,000,000.000
+Moneda
+COP
+Estado
+Activo
+*Efectiva: Compuesta
+*Nominal: Simple
+Históricos
+Genera el histórico
+Las descargas gratuitas están disponibles solo para las operaciones realizadas por los sistemas transaccionales. Si necesitas información de históricos por favor contactar al Centro de información Bursátil al correo publicaciones@bvc.com.co y recibir una cotización.
+Rango de fecha
+Genere histórico
