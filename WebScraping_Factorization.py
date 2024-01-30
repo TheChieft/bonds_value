@@ -35,8 +35,7 @@ def download_public():
     now = time.strftime("%Y%m%d", now)
     try:
         DRIVER.get(BOND_INFO_URL_PUBLIC)
-
-        WebDriverWait(DRIVER, 10).until(
+        WebDriverWait(DRIVER, 2).until(
             EC.presence_of_element_located((By.XPATH, '//button[@class="sc-gEvEer jlIRBY button-download"]')))
         download_button = DRIVER.find_element(
             By.XPATH, '//button[@class="sc-gEvEer jlIRBY button-download"]')
@@ -70,15 +69,26 @@ def get_info_bonds(codigo: str, url: str):
     with open("data/db/info_bonds_public.csv", "a") as file:
         
         file.write(f"{now},{codigo},{','.join(cont)}\n")
-    
+        
+def arreglar_df(df):
+    # read csv sin la primera fila y agregarle los nombres de las coolumnasmnas
+    columnas = ['Nemotécnico','Emisor','Clase de título','Fecha de vencimiento','Cantidad','Volúmenes','Tipo','Codigo Raro']
+    df = pd.read_csv('data/db/bonds_public.csv', skiprows=1, sep=';', names=columnas)
+    # eliminar columnas que no se usan como tipo y codigo raro
+    df = df.drop(['Tipo','Codigo Raro'], axis=1)
+    return df
+
 def do_the_scraping():
     public = pd.read_csv('data/db/bonds_public.csv')
+    public = arreglar_df(public)
     # Leer bien la tabla de bonos publicos
     try:
         for codigo in public['Nemotécnico']:
-            df = get_info_bonds(codigo, BOND_INFO_URL_PUBLIC)
-            df.to_csv("data/db/info_public_bonds.csv","w", header=False) # Esto no
+            if "TFI" in codigo or "TCO" in codigo:
+                df = get_info_bonds(codigo, BOND_INFO_URL_PUBLIC)
     except:
         print("No hay bonos publicos")
         
     DRIVER.quit()
+
+do_the_scraping()
