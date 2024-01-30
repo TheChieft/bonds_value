@@ -70,9 +70,7 @@ def read_bonds_info(codigo: str):
 
 
 def get_info_bonds(codigo: str, url: str):
-    
     url = url + codigo + "?tab=resumen"
-    
     try:
         # Abrir la página con Selenium
         DRIVER.get(url)      
@@ -104,4 +102,22 @@ def do_the_scraping():
             get_info_bonds(codigo, url)
     
 
-get_info_bonds("TES UVR 2024", BOND_INFO_URL_PUBLIC)
+#get_info_bonds("TES UVR 2024", BOND_INFO_URL_PUBLIC)
+#df = actual_bonds(BONDS_PUBLIC)
+#print(df.head())
+
+df = pd.read_csv("data/raw/bonds_public.csv")
+
+
+def qualifying_bcon (df):
+    filtro = df['Nemotécnico'].str.startswith('TFIT')
+    return(df[filtro])
+
+def qualifying_bsin (df):
+    filtro = df['Nemotécnico'].str.startswith('TCO')
+    return(df[filtro])
+
+bonds_cupon = qualifying_bcon(df)
+bonds_scupon = qualifying_bsin(df)
+
+print(bonds_cupon)
