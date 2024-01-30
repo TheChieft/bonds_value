@@ -4,13 +4,10 @@ import numpy as np
 from PIL import Image
 from datetime import datetime
 from streamlit_option_menu import option_menu
-import pandas as pd
 
 # CONSTANTS
-DATAFRAME = pd.read_csv('data/db/bonds_public.csv')
-INFO_DATAFRAME = pd.read_csv('data/db/info_bonds_public.csv',encoding='windows-1252')
-
-tfi = INFO_DATAFRAME[INFO_DATAFRAME['Nemotécnico'].str.startswith('TFI')]
+DATAFRAME = pd.read_csv('data/db/bonds_public.csv', sep=',')
+INFO_DATAFRAME = pd.read_csv('data/db/info_bonds_public.csv', sep=',')
 
 # FUNCTIONS ----------------------------------
 def qualifying_bcon (df):
@@ -21,8 +18,8 @@ def qualifying_bsin (df):
     filtro = df['Nemotécnico'].str.startswith('TCO')
     return(df[filtro])
 
-df_cupon = qualifying_bcon(DATAFRAME)
-df_sin_cupon = qualifying_bsin(DATAFRAME)
+df_cupon = qualifying_bcon(INFO_DATAFRAME)
+df_sin_cupon = qualifying_bsin(INFO_DATAFRAME)
 
 st.set_page_config(layout="wide", page_title='Valuación de Instrumentos Financieros', page_icon=':dollar:', initial_sidebar_state='auto')
 
@@ -57,24 +54,29 @@ if selected == 'Renta fija':
             )
 
         if selected == 'Cupón':
-
+            
+            st.dataframe(INFO_DATAFRAME)
             # Agregar un menú desplegable para seleccionar el Nemotécnico
             selected_nemotecnico = st.selectbox(
                 label='Selecciona un Nemotécnico',
-                options=tfi['Nemotécnico'].tolist(),
-                index=0
+                options=INFO_DATAFRAME['Nemotécnico'].tolist(),
+                index=0  # o puedes omitir el índice para que seleccione el primero por defecto
             )
 
-            # Filtrar el DataFrame basado en el Nemotécnico seleccionado
-            selected_row = tfi[tfi['Nemotécnico'] == selected_nemotecnico].iloc[0]
+            try:
+                # Filtrar el DataFrame basado en el Nemotécnico seleccionado
+                selected_row = INFO_DATAFRAME[INFO_DATAFRAME['Nemotécnico'] == selected_nemotecnico].iloc[0]
 
-            # Acciones específicas para el Nemotécnico seleccionado
-            FCB = selected_row['Tasa facial']
-            base = selected_row['Base']
-            fecha_emision = pd.to_datetime(selected_row['Fecha de emisión'])
-            fecha_vencimiento = pd.to_datetime(selected_row['Fecha de vencimiento'])
+                # Acciones específicas para el Nemotécnico seleccionado
+                FCB = selected_row['Tasa facial']
+                base = selected_row['Base']
+                fecha_emision = pd.to_datetime(selected_row['Fecha de emisión'])
+                fecha_vencimiento = pd.to_datetime(selected_row['Fecha de vencimiento'])
 
-            tasa_anual = st.text_input() #Ingresa la tasa de referencia
+            except IndexError:
+                st.warning('Nemotécnico no encontrado o DataFrame vacío.')
+
+            tasa_anual = st.text_input('Ingresa la tasa de referencia:') #Ingresa la tasa de referencia
 
             if tasa_anual and FCB and base:
 
@@ -97,11 +99,19 @@ if selected == 'Renta fija':
                         '%m-%d')
 
                     # Crear la lista de fechas de pago de cupones
-
+                    fecha_simulacion = st.date_input('Seleccione la fecha simulación de compra entre fecha de emisión y de vencimiento')
+                    año_simulacion = fecha_simulacion.year
                     cupones = []
                     for i in range(int(año_vencimiento)-int(año_emision)+1):
-                        cupones.append(
-                            f'{int(año_emision)+i}-{mes_dia_vencimiento}')
+                        try:
+                            if año_simulacion: 
+                                cupones.append(
+                                    f'{int(año_simulacion)+i}-{mes_dia_vencimiento}')
+
+                            cupones.append(
+                                f'{int(año_emision)+i}-{mes_dia_vencimiento}')
+                        except:
+                            print('No se selecciono bien la fecha de simulación')
 
                     df_cupones = pd.DataFrame({'Pago_cupones': cupones})
                     df_cupones['Pago_cupones'] = pd.to_datetime(
@@ -201,6 +211,6 @@ if selected == 'Renta fija':
             with col2:
                 st.markdown("<h1 style='display: flex; font-size:20px; text-align: left;'>Principales Emisores</h1>",
                         unsafe_allow_html=True)
-                st.dataframe(DATAFRAME['Emisor'].value_counts())  
+                st.dataframe(DATAFRAME['Emisor'].value_counts())
             
             

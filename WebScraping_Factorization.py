@@ -9,6 +9,18 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import os
+import time 
+import os
+import pandas as pd
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 
 # CONSTANTS
 BONDS_PUBLIC = 'https://www.bvc.com.co/mercado-local-en-linea?tab=renta-fija_deuda-publica-segmento-publico'
@@ -16,17 +28,16 @@ BONDS_PRIVATE = 'https://www.bvc.com.co/mercado-local-en-linea?tab=renta-fija_de
 BONDS_CORPORATE = 'https://www.bvc.com.co/mercado-local-en-linea?tab=renta-fija_deuda-corporativa'
 BONDS = [BONDS_PUBLIC, BONDS_PRIVATE, BONDS_CORPORATE]
 
-BOND_INFO_URL_PUBLIC = 'https://www.bvc.com.co/renta-fija-deuda-publica-segmento-publico/'
+BOND_INFO_URL_PUBLIC = 'https://www.bvc.com.co/mercado-local-en-linea?tab=renta-fija_deuda-publica-segmento-publico'
 BOND_INFO_URL_PRIVATE = 'https://www.bvc.com.co/renta-fija-deuda-publica-segmento-privado/'
 BOND_INFO_URL_CORPORATE = 'https://www.bvc.com.co/renta-fija-deuda-corporativa/'
 
 # Web Scraping drivers
 OPTS = webdriver.ChromeOptions()
 OPTS.add_argument(
-        "user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+    "user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/113.0.0.0 Safari/537.36")
 OPTS.add_argument("--headless")
-DRIVER = webdriver.Chrome(service=webdriver.chrome.service.Service(
-        ChromeDriverManager().install()), options=OPTS)
+DRIVER = webdriver.Chrome(ChromeDriverManager().install(), options=OPTS)
 
 # FUNCTIONS ----------------------------------
 
@@ -67,7 +78,6 @@ def get_info_bonds(codigo: str, url: str):
             cont.append(content[content.index(item) + 1].replace('\n', ''))
     # insertar en info_bonds_public.csv
     with open("data/db/info_bonds_public.csv", "a") as file:
-        
         file.write(f"{now},{codigo},{','.join(cont)}\n")
         
 def arreglar_df(df):
@@ -93,4 +103,4 @@ def do_the_scraping():
         
     DRIVER.quit()
     
-arreglar_df(pd.read_csv('data/db/bonds_public.csv'))
+do_the_scraping()
