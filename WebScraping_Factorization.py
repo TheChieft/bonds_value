@@ -76,6 +76,8 @@ def arreglar_df(df):
     df = pd.read_csv('data/db/bonds_public.csv', skiprows=1, sep=';', names=columnas)
     # eliminar columnas que no se usan como tipo y codigo raro
     df = df.drop(['Tipo','Codigo Raro'], axis=1)
+    # Reescribir bonds_public.csv
+    df.to_csv('data/db/bonds_public.csv', index=False)
     return df
 
 def do_the_scraping():
@@ -90,5 +92,5 @@ def do_the_scraping():
         print("No hay bonos publicos")
         
     DRIVER.quit()
-
-do_the_scraping()
+    
+arreglar_df(pd.read_csv('data/db/bonds_public.csv'))
