@@ -10,16 +10,28 @@ DATAFRAME = pd.read_csv('data/db/bonds_public.csv', sep=',')
 INFO_DATAFRAME = pd.read_csv('data/db/info_bonds_public.csv', sep=',')
 
 # FUNCTIONS ----------------------------------
+# Filtrar DATAFRAME por Nemotécnico lo que tienen FTIT y TCO
+def filtro_nemotecnico (df):
+    filtro = df['Nemotécnico'].str.startswith('TFIT') | df['Nemotécnico'].str.startswith('TCO')
+    return(df[filtro])
+
+DATAFRAME = filtro_nemotecnico(DATAFRAME)
+
 def qualifying_bcon (df):
     filtro = df['Nemotécnico'].str.startswith('TFIT')
     return(df[filtro])
+
+df_cupon = qualifying_bcon(INFO_DATAFRAME)
 
 def qualifying_bsin (df):
     filtro = df['Nemotécnico'].str.startswith('TCO')
     return(df[filtro])
 
-df_cupon = qualifying_bcon(INFO_DATAFRAME)
 df_sin_cupon = qualifying_bsin(INFO_DATAFRAME)
+
+def precio_bono_sin_cupon(F, r, n, t):
+    return F / (1 + r/n)**(n*t)
+
 
 st.set_page_config(layout="wide", page_title='Valuación de Instrumentos Financieros', page_icon=':dollar:', initial_sidebar_state='auto')
 
@@ -30,7 +42,7 @@ with st.sidebar:
     selected = st.selectbox(
         label='Seleccione una opción:',
         options=['Mercado local: Análisis General', 'Renta Variable',
-                 'Renta fija', 'ETFs', 'Criptomonedas'],
+                'Renta fija', 'ETFs', 'Criptomonedas'],
         index=0
     )
 
@@ -55,17 +67,17 @@ if selected == 'Renta fija':
 
         if selected == 'Cupón':
             
-            st.dataframe(INFO_DATAFRAME)
+            st.dataframe(df_cupon)
             # Agregar un menú desplegable para seleccionar el Nemotécnico
             selected_nemotecnico = st.selectbox(
                 label='Selecciona un Nemotécnico',
-                options=INFO_DATAFRAME['Nemotécnico'].tolist(),
+                options=df_cupon['Nemotécnico'].tolist(),
                 index=0  # o puedes omitir el índice para que seleccione el primero por defecto
             )
 
             try:
                 # Filtrar el DataFrame basado en el Nemotécnico seleccionado
-                selected_row = INFO_DATAFRAME[INFO_DATAFRAME['Nemotécnico'] == selected_nemotecnico].iloc[0]
+                selected_row = df_cupon[df_cupon['Nemotécnico'] == selected_nemotecnico].iloc[0]
 
                 # Acciones específicas para el Nemotécnico seleccionado
                 FCB = selected_row['Tasa facial']
@@ -99,20 +111,10 @@ if selected == 'Renta fija':
                         '%m-%d')
 
                     # Crear la lista de fechas de pago de cupones
-                    fecha_simulacion = st.date_input('Seleccione la fecha simulación de compra entre fecha de emisión y de vencimiento')
-                    año_simulacion = fecha_simulacion.year
                     cupones = []
                     for i in range(int(año_vencimiento)-int(año_emision)+1):
-                        try:
-                            if año_simulacion: 
-                                cupones.append(
-                                    f'{int(año_simulacion)+i}-{mes_dia_vencimiento}')
-
-                            cupones.append(
-                                f'{int(año_emision)+i}-{mes_dia_vencimiento}')
-                        except:
-                            print('No se selecciono bien la fecha de simulación')
-
+                        cupones.append(
+                            f'{int(año_emision)+i}-{mes_dia_vencimiento}')
                     df_cupones = pd.DataFrame({'Pago_cupones': cupones})
                     df_cupones['Pago_cupones'] = pd.to_datetime(
                         df_cupones['Pago_cupones'], format='%Y-%m-%d')
@@ -192,10 +194,55 @@ if selected == 'Renta fija':
         # Sin cupón
         if selected == 'Sin cupón':
             # Titulo sección
-            st.markdown("<h1 style='display: flex; font-size: 30px; text-align: left;'>Valuación de Bonos</h1>",
+            st.markdown("<h1 style='display: flex; font-size: 30px; text-align: left;'>Valuación de Bonos Sin Cupón</h1>",
                         unsafe_allow_html=True)
             
+            # Mostrar el DataFrame de bonos sin cupón
             st.dataframe(df_sin_cupon, width=2000, height=100)
+            
+            # Agregar un menú desplegable para seleccionar el Nemotécnico
+            selected_nemotecnico_sin_cupon = st.selectbox(
+                label='Selecciona un Nemotécnico',
+                options=df_sin_cupon['Nemotécnico'].tolist(),
+                index=0
+            )
+
+            try:
+                # Filtrar el DataFrame basado en el Nemotécnico seleccionado
+                selected_row_sin_cupon = df_sin_cupon[df_sin_cupon['Nemotécnico'] == selected_nemotecnico_sin_cupon].iloc[0]
+
+                # Acciones específicas para el Nemotécnico seleccionado
+                valor_nominal_sin_cupon = selected_row_sin_cupon['Valor Nominal']
+                plazo_sin_cupon = selected_row_sin_cupon['Plazo (en períodos)']
+
+            except IndexError:
+                st.warning('Nemotécnico no encontrado o DataFrame vacío para bonos sin cupón.')
+
+            if valor_nominal_sin_cupon and plazo_sin_cupon:
+
+                # Convertir los valores a números
+                valor_nominal_sin_cupon = float(valor_nominal_sin_cupon)
+                plazo_sin_cupon = int(plazo_sin_cupon)
+
+                # Crear una lista de períodos hasta el vencimiento
+                periodos_sin_cupon = list(range(1, plazo_sin_cupon + 1))
+
+                # Calcular los precios de los bonos sin cupón utilizando la fórmula del número de Euler
+                precios_sin_cupon = [precio_bono_sin_cupon(valor_nominal_sin_cupon, tasa_diaria, 2, periodo/2) for periodo in periodos_sin_cupon]
+
+                # Crear un DataFrame con los resultados
+                df_valuacion_sin_cupon = pd.DataFrame({
+                    'Período': periodos_sin_cupon,
+                    'Precio Bono Sin Cupón': precios_sin_cupon
+                })
+
+                # Mostrar la tabla de valuación
+                st.dataframe(df_valuacion_sin_cupon, width=800, height=400)
+
+            else:
+                st.warning('Por favor, ingrese valores válidos para el valor nominal y el plazo del bono sin cupón.')
+
+
         
         if selected == 'General':
             # Titulo sección
