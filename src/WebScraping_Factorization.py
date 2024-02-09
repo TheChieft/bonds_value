@@ -1,15 +1,5 @@
 # Libraries to run de code
 import time 
-import pandas as pd
-from bs4 import BeautifulSoup
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import os
-import time 
 import os
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -62,7 +52,9 @@ def download_public():
 
 def get_info_bonds(codigo: str, url: str):
     url = url + codigo + "?tab=resumen"
+    print(url)
     DRIVER.get(url)      
+    print("get_info_bonds")
     time.sleep(5)
     content = DRIVER.find_element(By.CLASS_NAME, "Summarystyled__StyledSummary-sc-1ougflf-0")
     now = time.localtime()
@@ -74,10 +66,10 @@ def get_info_bonds(codigo: str, url: str):
     cont = []
     for item in content:
         if item in keywords:
-
             cont.append(content[content.index(item) + 1].replace('\n', ''))
     # insertar en info_bonds_public.csv
     with open("data/db/info_bonds_public.csv", "a") as file:
+        print(f"{now},{codigo},{','.join(cont)}\n")
         file.write(f"{now},{codigo},{','.join(cont)}\n")
         
 def arreglar_df(df):
@@ -91,13 +83,16 @@ def arreglar_df(df):
     return df
 
 def do_the_scraping():
+    download_public()
     public = pd.read_csv('data/db/bonds_public.csv')
     public = arreglar_df(public)
     # Leer bien la tabla de bonos publicos
+    print(public)
     try:
         for codigo in public['Nemotécnico']:
-            if "TFI" in codigo or "TCO" in codigo:
-                df = get_info_bonds(codigo, BOND_INFO_URL_PUBLIC)
+            if "TFIT" in codigo or "TCO" in codigo:
+                print(codigo)
+                get_info_bonds(codigo, BOND_INFO_URL_PUBLIC)
     except:
         print("No hay bonos publicos")
         
