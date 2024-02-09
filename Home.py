@@ -5,7 +5,7 @@ st.set_page_config(page_title="Valuación de instrumentos financieros", page_ico
 # Titulo
 # icono encima del titulo
 st.markdown("<h2 style='font-size: 80px; text-align: Center; padding: 0px'>💰</h2>"
-            "<h1 style='font-size: 50px; text-align: Center;'>Una manera sencilla de valuar los instrumentos financieros</h1>"
+            "<h1 style='font-size: 50px; text-align: Center;'>Una manera sencilla de valorar los instrumentos financieros</h1>"
             "<p style='text-align: Center; font-size: 25px'>Esta aplicación te permite valorar los instrumentos financieros de manera sencilla y rápida.</p>"
             "<hr>"
             "<h3 style='text-align: Center;'>Instrumentos financieros</h3>"
