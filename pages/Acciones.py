@@ -122,7 +122,7 @@ with st.expander("Precios"):
         ),
         showlegend=True,
         legend=dict(font=dict(color='white')),
-        width=700,
+        width=650,
         height=400
     )
 
@@ -173,7 +173,7 @@ with st.expander("Retornos acumulados"):
         ),
         showlegend=True,
         legend=dict(font=dict(color='white')),
-        width=700,
+        width=650,
         height=400
     )
 
@@ -205,17 +205,28 @@ for ticker in selected_tickers:
 
     # Display results for each stock en la columna de la izquierda
 
-# Calculate CAPM for each selected stock
+# Obtén el primer ticker de la lista seleccionada
+default_ticker = selected_tickers[0]
+
+# Crea el menú desplegable inicial con el primer ticker
+selected_stock = st.selectbox(
+    "Seleccione una acción:",
+    selected_tickers,
+    index=selected_tickers.index(default_ticker),
+)
+
+# Itera sobre los tickers y muestra las tarjetas de métricas solo para el ticker seleccionado
 for ticker in selected_tickers:
     expected_return, beta = calculate_capm(
         ticker, market_ticker, start_date, end_date)
 
-    # Display results for each stock en la columna de la izquierda
-    col1, col2, col3 = st.columns(3)
-    st.header(ticker)
-    col1.metric('Market Ticker:', value=market_ticker)
-    col2.metric('Expected Return:', value=expected_return)
-    col3.metric('Beta', value=beta)
-    style_metric_cards(background_color='rgba(0,0,0,0)', border_left_color="white",
-                       border_color="white", box_shadow="blue")
-    st.write("----")
+    # Muestra las tarjetas de métricas solo para el ticker seleccionado
+    if ticker == selected_stock:
+        # st.header(f'{ticker}')
+        col1, col2, col3 = st.columns(3)
+        col1.metric('Market Ticker:', value=market_ticker)
+        col2.metric('Expected Return:', value=expected_return)
+        col3.metric('Beta', value=beta)
+        style_metric_cards(background_color='rgba(0,0,0,0)', border_left_color="#003C6F",
+                           border_color="#003C6F", box_shadow="blue")
+        st.write("----")
