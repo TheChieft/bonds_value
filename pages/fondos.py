@@ -18,12 +18,12 @@ for fund_symbol in fund_list:
     print("-----------------------------")
 
     # Muestra las tarjetas de métricas solo para el ticker seleccionado
-    if ticker == selected_stock:
-        # st.header(f'{ticker}')
-        col1, col2, col3 = st.columns(3)
-        col1.metric('Market Ticker:', value=market_ticker)
-        col2.metric('Expected Return:', value=expected_return)
-        col3.metric('Beta', value=beta)
-        style_metric_cards(background_color='rgba(0,0,0,0)', border_left_color="#003C6F",
-                           border_color="#003C6F", box_shadow="blue")
-        st.write("----")
+# if ticker == selected_stock:
+    # st.header(f'{ticker}')
+#    col1, col2, col3 = st.columns(3)
+#    col1.metric('Market Ticker:', value=market_ticker)
+#    col2.metric('Expected Return:', value=expected_return)
+#    col3.metric('Beta', value=beta)
+#    style_metric_cards(background_color='rgba(0,0,0,0)', border_left_color="#003C6F",
+#                        border_color="#003C6F", box_shadow="blue")
+#    st.write("----")

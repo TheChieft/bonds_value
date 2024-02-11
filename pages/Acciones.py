@@ -63,7 +63,7 @@ def calculate_capm(ticker, market_ticker, start_date, end_date):
     regression_data = {
         'X': X['const'].tolist(), 'y': model.fittedvalues.tolist()}
 
-    return alpha_jensen, beta_value, regression_data
+    return alpha_jensen, beta_value, regression_data, model.summary()
 
 
 # Mapeo de siglas a nombres completos
@@ -143,8 +143,8 @@ with st.expander("Precios"):
     fig = go.Figure()
 
     # Agregar las líneas de precios de acciones
-    for i, df_stock_prices in enumerate(stock_returns):
-        fig.add_trace(go.Scatter(x=df_stock_prices.index, y=df_stock_prices.iloc[:, 0],  # Utilizamos iloc para seleccionar la columna
+    for i, stock_prices_df in enumerate(stock_prices):
+        fig.add_trace(go.Scatter(x=stock_prices_df.index, y=stock_prices_df.iloc[:, 0],  # Utilizamos iloc para seleccionar la columna
                                  mode='lines', name=f'{selected_tickers[i]}'))
 
     # Configurar el diseño del gráfico
@@ -254,7 +254,7 @@ selected_stock = st.selectbox(
 # Muestra las tarjetas de métricas solo para el ticker seleccionado
 # Itera sobre los tickers y muestra las tarjetas de métricas solo para el ticker seleccionado
 for ticker in selected_tickers:
-    alpha_jensen_df, beta_values_df, regression_data = calculate_capm(
+    alpha_jensen_df, beta_values_df, regression_data, summary = calculate_capm(
         ticker, market_ticker, start_date, end_date)
 
     # Muestra las tarjetas de métricas solo para el ticker seleccionado
@@ -269,16 +269,17 @@ for ticker in selected_tickers:
 
         with st.expander("CAPM Model"):
 
+            st.write(summary)
             # Gráfico CAPM
             fig_capm = go.Figure()
-
-            # Scatter plot para los puntos de la regresión
-            fig_capm.add_trace(go.Scatter(x=regression_data['X'], y=regression_data['y'],
-                                          mode='markers', name='Data Points', marker=dict(color='red')))
 
             # Línea de regresión
             fig_capm.add_trace(go.Scatter(x=regression_data['X'], y=regression_data['y'],
                                           mode='lines', name='CAPM Regression', line=dict(color='blue')))
+
+            # Scatter plot para los puntos de la regresión
+            fig_capm.add_trace(go.Scatter(x=regression_data['X'], y=regression_data['y'],
+                                          mode='markers', name='Data Points', marker=dict(color='red')))
 
             # Configuración del diseño del gráfico CAPM
             fig_capm.update_xaxes(tickcolor='white', tickfont=dict(
