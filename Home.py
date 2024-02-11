@@ -1,6 +1,7 @@
 import streamlit as st
 # icono
-st.set_page_config(page_title="Valuación de instrumentos financieros", page_icon=":moneybag:")
+st.set_page_config(page_title="Valuación de instrumentos financieros",
+                   page_icon=":moneybag:")
 
 # Titulo
 # icono encima del titulo
