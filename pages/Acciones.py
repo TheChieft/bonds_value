@@ -5,6 +5,7 @@ import numpy as np
 import datetime
 import plotly.graph_objects as go
 from scipy.stats import linregress
+from streamlit_extras.metric_cards import style_metric_cards
 
 # Obtener la lista de símbolos de las empresas que cotizan en el NYSE
 nyse_symbols = pd.read_csv('data/db/nasdaq_screener.csv', header=0)
@@ -20,6 +21,10 @@ def get_stock_data(ticker, start_date, end_date):
 
 def get_stock_cumulative_returns(ticker, start_date, end_date):
     stock_prices = get_stock_data(ticker, start_date, end_date)
+
+    if stock_prices.empty or len(stock_prices) == 1:
+        # La secuencia está vacía o tiene solo un elemento, no se pueden calcular los retornos
+        return pd.Series(index=stock_prices.index, data=0.0)
     stock_returns = stock_prices.pct_change().dropna()
     stock_cumulative_returns = (1 + stock_returns).cumprod() - 1
     return stock_cumulative_returns
@@ -43,13 +48,20 @@ def calculate_capm(ticker, market_ticker, start_date, end_date):
 # Mapeo de siglas a nombres completos
 index_mapping = {
     "^GSPC": "S&P 500",
-    "^DJI": "Dow Jones Industrial Average",
+    "^DJI": "Dow Jones",
     "^IXIC": "Nasdaq Composite",
     "^RUT": "Russell 2000"
 }
 
 # Streamlit app
 st.title("Modelo CAPM")
+
+st.markdown(
+    '''Como representación de mercado de Estados Unidos se utiliza en la práctica un índice bursátil representativo de 
+    las acciones que en él cotizan, tales como el Dow Jones, S&P 500, Nasdaq Composite y Russell 2000, por defecto se toma el S&P 500
+    y se recomienda porque incluye 500 de las empresas más grandes y representativas cotizadas en las bolsas de valores de EE.UU. 
+    Estas empresas provienen de diversos sectores, lo que lo convierte en un buen indicador de la salud general del mercado estadounidense.
+    ''')
 
 st.header("Parámetros")
 # Crear columnas para organizar el diseño
@@ -82,14 +94,10 @@ stock_prices = [get_stock_data(ticker, start_date, end_date)
 
 stock_returns = [get_stock_cumulative_returns(ticker, start_date, end_date)
                  for ticker in selected_tickers]
-# --- Menú gráficos ---
-
-selected_chart = st.selectbox("Gráfico:", [
-                              "Precios", "Retornos acumulados"])
 
 # ---- Gráfico precios ----
 
-if selected_chart == 'Precios':
+with st.expander("Precios"):
 
     fig = go.Figure()
 
@@ -139,7 +147,9 @@ if selected_chart == 'Precios':
     st.plotly_chart(fig)
 
 # ---- Gráfico retornos ----
-if selected_chart == 'Retornos acumulados':
+
+with st.expander("Retornos acumulados"):
+
     fig = go.Figure()
 
     # Agregar las líneas de precios de acciones
@@ -187,6 +197,7 @@ if selected_chart == 'Retornos acumulados':
     # Mostrar el gráfico en Streamlit
     st.plotly_chart(fig)
 
+
 # Calculate CAPM for each selected stock
 for ticker in selected_tickers:
     expected_return, beta = calculate_capm(
@@ -194,10 +205,17 @@ for ticker in selected_tickers:
 
     # Display results for each stock en la columna de la izquierda
 
-    st.subheader(f"Resultados para {ticker} en {selected_index_name}:")
-    st.write(f"Market Ticker: {market_ticker}")
-    st.write(f"Expected Return: {expected_return:.4%}")
-    st.write(f"Beta: {beta:.4}")
-    st.write("----")
+# Calculate CAPM for each selected stock
+for ticker in selected_tickers:
+    expected_return, beta = calculate_capm(
+        ticker, market_ticker, start_date, end_date)
 
-# Additional charts or information can be added as needed
+    # Display results for each stock en la columna de la izquierda
+    col1, col2, col3 = st.columns(3)
+    st.header(ticker)
+    col1.metric('Market Ticker:', value=market_ticker)
+    col2.metric('Expected Return:', value=expected_return)
+    col3.metric('Beta', value=beta)
+    style_metric_cards(background_color='rgba(0,0,0,0)', border_left_color="white",
+                       border_color="white", box_shadow="blue")
+    st.write("----")
