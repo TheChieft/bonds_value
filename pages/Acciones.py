@@ -96,7 +96,7 @@ with col1:
     )
 
     if len(selected_tickers) > 5:
-        st.warning("Por favor, selecciona un máximo de 4 activos.")
+        st.warning("Por favor, selecciona un máximo de 5 activos.")
         st.stop()
 
 with col2:
@@ -269,7 +269,6 @@ for ticker in selected_tickers:
 
         with st.expander("CAPM Model"):
 
-            st.write(summary)
             # Gráfico CAPM
             fig_capm = go.Figure()
 
@@ -321,3 +320,5 @@ for ticker in selected_tickers:
 
             # Mostrar el gráfico CAPM en Streamlit
             st.plotly_chart(fig_capm)
+
+            st.write(summary)
