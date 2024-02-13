@@ -58,7 +58,7 @@ st.sidebar.title("Parámetros")
 
 # Menú desplegable para seleccionar las empresas
 selected_tickers = st.sidebar.multiselect(
-    "Select Stock Tickers:", nyse_symbols['Symbol'].to_list(), default=["AAPL"],
+    "Select Stock Tickers:", nyse_symbols, default=["VIVAX"],
 )
 
 if not selected_tickers:
