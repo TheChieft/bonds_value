@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import yfinance as yf
 import pandas_datareader.data as web
 import numpy as np
 import datetime
@@ -7,7 +8,10 @@ import plotly.graph_objects as go
 from scipy.stats import linregress
 import statsmodels.api as sm
 from streamlit_extras.metric_cards import style_metric_cards
-from src.funcionesAcciones import get_stock_data, get_stock_cumulative_returns, calculate_capm
+from src.funcionesAcciones import get_stock_data, get_stock_cumulative_returns, calculate_capm, calculate_stock_returns
+import matplotlib.pyplot as plt
+from plotly.subplots import make_subplots
+
 # -------------------------------------------------------------
 # Configuraciones de la página
 st.set_page_config(layout="wide", page_title="Acciones & Modelos CAPM", page_icon="📈")
@@ -66,6 +70,7 @@ if not selected_tickers:
 market_ticker_options = list(index_mapping.values())
 selected_index_name = st.sidebar.selectbox(
     "Select Market Index:", market_ticker_options)
+
 # Obtener la sigla correspondiente al índice seleccionado
 market_ticker = [key for key, value in index_mapping.items(
 ) if value == selected_index_name][0]
@@ -194,64 +199,91 @@ selected_stock = st.selectbox(
 
 # Muestra las tarjetas de métricas solo para el ticker seleccionado
 # Itera sobre los tickers y muestra las tarjetas de métricas solo para el ticker seleccionado
-for ticker in selected_tickers:
-    alpha_jensen_df, beta_values_df, regression_data, summary = calculate_capm(
-        ticker, market_ticker, start_date, end_date)
+# ---- Gráfico CAPM ----
+
+# Itera sobre los tickers y muestra las tarjetas de métricas solo para el ticker seleccionado
+for i, ticker in enumerate(selected_tickers):
+    fig, betas, alphas, historic_returns = calculate_stock_returns([ticker], [market_ticker])
 
     # Muestra las tarjetas de métricas solo para el ticker seleccionado
     if ticker == selected_stock:
         col1, col2, col3 = st.columns(3)
         col1.metric('Market Ticker:', value=market_ticker)
-        col2.metric('Alpha (Jensen):', value=alpha_jensen_df)
-        col3.metric('Beta:', value=beta_values_df)
+        col2.metric('Alpha (Jensen):', value=round(alphas[ticker],4))
+        col3.metric('Beta:', value=round(betas[ticker],4))
         style_metric_cards(background_color='rgba(0,0,0,0)', border_left_color="#003C6F",
                            border_color="#003C6F", box_shadow="blue")
         st.write("----")
-        st.title("CAPM Model")
 
-# Gráfico CAPM
-fig_capm = go.Figure()
+        # Gráfico CAPM
+        st.title("Gráfico CAPM")
+        st.plotly_chart(fig)
 
-# Línea de regresión
-fig_capm.add_trace(go.Scatter(x=regression_data['X'], y=regression_data['y'],
-                                      mode='lines', name='CAPM Regression', line=dict(color='blue')))
+gb, ga = st.columns(2)
 
-# Scatter plot para los puntos de la regresión
-fig_capm.add_trace(go.Scatter(x=regression_data['X'], y=regression_data['y'],
-                                      mode='markers', name='Data Points', marker=dict(color='red')))
+with gb:
+# Crear un gráfico de barras para los Betas
+    fig_betas = go.Figure()
 
-# Configuración del diseño del gráfico CAPM
-fig_capm.update_xaxes(tickcolor='white', tickfont=dict(
-    color='white'), title=dict(text='Benchmark Returns', font=dict(color='white')))
-fig_capm.update_yaxes(tickcolor='white', tickfont=dict(
-    color='white'), title=dict(text='Stock Returns', font=dict(color='white')))
+    # Iterar sobre los tickers seleccionados
+    for ticker in selected_tickers:
+        # Calcular los Betas
+        _, betas, _, _ = calculate_stock_returns([ticker], [market_ticker])
+        
+        # Agregar una barra para el Beta de la acción actual
+        fig_betas.add_trace(go.Bar(x=[ticker], y=[betas[ticker]], name=ticker))
 
-        # Ajustar el título general
-fig_capm.update_layout(
-    title=dict(
-        text='CAPM Model',
-        font=dict(color='white', size=20),
-        x=0.35,
-        y=0.9
-    ),
-    legend=dict(font=dict(color='white')),
-    paper_bgcolor='rgba(0,0,0,0)',  # Fondo del papel transparente
-    # Fondo del gráfico transparente
-    plot_bgcolor='rgba(0,0,0,0)',
-    xaxis_showgrid=True,
-    yaxis_showgrid=True,
-    xaxis_ticks='outside',
-    yaxis_ticks='outside',
-    xaxis_linecolor='white',
-    yaxis_linecolor='white',
-    showlegend=True,
-    # Color de la cuadrícula del eje x con alpha
-    xaxis_gridcolor='rgba(255, 255, 255, 0.1)',
-    # Color de la cuadrícula del eje x con alpha
-    yaxis_gridcolor='rgba(255, 255, 255, 0.1)'
-)
+    # Configurar el diseño del gráfico de Betas
+    fig_betas.update_layout(
+        title=dict(
+                text='Betas',
+                font=dict(color='white', size=20),
+                x=0.4,
+                y=0.9
+            ),
+        xaxis_title='Acciones',
+        yaxis_title='Beta',
+        barmode='group',
+        paper_bgcolor='rgba(0,0,0,0)',  # Fondo del papel transparente
+        plot_bgcolor='rgba(0,0,0,0)',   # Fondo del gráfico transparente
+        xaxis=dict(tickfont=dict(color='white')),
+        yaxis=dict(tickfont=dict(color='white')),
+        font=dict(color='white'),
+    )
 
-        # Mostrar el gráfico CAPM en Streamlit
-st.plotly_chart(fig_capm)
+    # Mostrar el gráfico de Betas en Streamlit
+    st.plotly_chart(fig_betas)
 
-st.write(summary)
+with ga:
+# Crear un gráfico de barras para los Betas
+    fig_alphas = go.Figure()
+
+    # Iterar sobre los tickers seleccionados
+    for ticker in selected_tickers:
+        # Calcular los Betas
+        _, _, alphas, _ = calculate_stock_returns([ticker], [market_ticker])
+        
+        # Agregar una barra para el Beta de la acción actual
+        fig_alphas.add_trace(go.Bar(x=[ticker], y=[alphas[ticker]], name=ticker))
+
+    # Configurar el diseño del gráfico de Betas
+    fig_alphas.update_layout(
+        title=dict(
+                text='Alphas',
+                font=dict(color='white', size=20),
+                x=0.4,
+                y=0.9
+            ),
+        xaxis_title='Acciones',
+        yaxis_title='Alpha',
+        barmode='group',
+        showlegend=True,
+        paper_bgcolor='rgba(0,0,0,0)',  # Fondo del papel transparente
+        plot_bgcolor='rgba(0,0,0,0)',   # Fondo del gráfico transparente
+        xaxis=dict(tickfont=dict(color='white')),
+        yaxis=dict(tickfont=dict(color='white')),
+        font=dict(color='white'),
+    )
+
+    # Mostrar el gráfico de Betas en Streamlit
+    st.plotly_chart(fig_alphas)
