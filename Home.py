@@ -49,13 +49,16 @@ st.markdown(
                 <a class="home_bar" href="Home" target="" rel="noreferrer">🏠 Home</a>
             </div>
             <div class="st-emotion-cache-j7qwjs">
-                <a class="home_bar" href="Acciones" target="" rel="noreferrer">1️⃣ Page 1</a>
+                <a class="home_bar" href="Acciones" target="" rel="noreferrer">1️⃣ Acciones</a>
             </div>
             <div class="st-emotion-cache-j7qwjs">
-                <a class="home_bar" href="Bonds_cupon" target="" rel="noreferrer">2️⃣ Page 2</a>
+                <a class="home_bar" href="Bonds_cupon" target="" rel="noreferrer">2️⃣ Bonds Cupon</a>
             </div>
             <div class="st-emotion-cache-j7qwjs">
-                <a class="home_bar" href="Bonds_sin_cupon" target="" rel="noreferrer">🌎 Google</a>
+                <a class="home_bar" href="Bonds_sin_cupon" target="" rel="noreferrer"> 3️⃣ Bonds Zero</a>
+            </div>
+            <div class="st-emotion-cache-j7qwjs">
+                <a class="home_bar" href="Bonds_sin_cupon" target="" rel="noreferrer"> 4️⃣ Bonds Zero</a>
             </div>
         </div>
     </div>
