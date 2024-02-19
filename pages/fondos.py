@@ -263,7 +263,7 @@ with gb:
         showlegend=False,
         paper_bgcolor='rgba(0,0,0,0)',  # Fondo del papel transparente
         plot_bgcolor='rgba(0,0,0,0)',   # Fondo del gráfico transparente
-        xaxis=dict(tickfont=dict(color='white'), title=dict(text='Fondos')),
+        xaxis=dict(tickfont=dict(color='white'), title=dict(text='Fondo')),
         yaxis=dict(tickfont=dict(color='white')),
         font=dict(color='white'),
     )
@@ -302,7 +302,7 @@ with ga:
         showlegend=True,
         paper_bgcolor='rgba(0,0,0,0)',  # Fondo del papel transparente
         plot_bgcolor='rgba(0,0,0,0)',   # Fondo del gráfico transparente
-        xaxis=dict(tickfont=dict(color='white'), title=dict(text='Fondos')),
+        xaxis=dict(tickfont=dict(color='white'), title=dict(text='Fondo')),
         yaxis=dict(tickfont=dict(color='white')),
         font=dict(color='white'),
     )
