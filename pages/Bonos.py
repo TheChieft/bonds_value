@@ -4,19 +4,43 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
+import math
+
+def calcular_precio_bono(fecha_emision, fecha_compra, fecha_vencimiento, tasa_facial, tasa_referencia, valor_inicial):
+    """
+    Calcula el precio de un bono.
+
+    Parámetros:
+    fecha_emision (datetime): Fecha de emisión del bono.
+    fecha_compra (datetime): Fecha de compra del bono.
+    fecha_vencimiento (datetime): Fecha de vencimiento del bono.
+    tasa_facial (float): Tasa de interés del bono.
+    tasa_referencia (float): Tasa de interés de referencia.
+    valor_inicial (float): Valor inicial del bono.
+
+    Retorna:
+    float: Precio del bono.
+    """
+    if fecha_compra == fecha_emision:
+        fecha = fecha_emision.day / fecha_vencimiento.day
+        precio_bono = round(math.exp(-tasa_facial * fecha),3) * valor_inicial
+    else:
+        fecha = (fecha_vencimiento - fecha_compra).days / 365 # Convert fecha to numeric type
+        precio_bono = round(math.exp(-tasa_referencia * fecha),3)* valor_inicial
+    return precio_bono
 
 # Función bono valor presente
 def valor_presente(te, tn, vb, t, fc, T): # te: tasa emisión, tn:tasa negociación
     T = (T-t).days
     fc = (fc - t).days 
-    c = convertion_rate(te)                # t : fecha emision, fc: fecha compra T:tasa vencimiento
+    c = convertion_rate(te)             # t : fecha emision, fc: fecha compra T:tasa vencimiento
     r = convertion_rate(tn)
     basic = (1+r)**(T-fc)
     part2 = 100/basic
     valor_m = (basic-1)/(basic*r)
     valor = c*(valor_m)+part2
     total = valor * vb / 100
-    return(total)
+    return round(total,2)
 
 # Función que convertirá la tasa anual a tasa diaria
 def convertion_rate(taa): # ta: tasa anual actual
@@ -70,7 +94,19 @@ st.title("Calculadora avanzada de Bonos con cupón")
 
 tab1, tab2, tab3 = st.tabs(["Bonos sin cupón", "Bono con cupon", "Valor presente bono con cupon"])
 with tab1:
-    st.write('Proximamente')
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        fecha_emision = st.date_input('Fecha emisión', value=datetime.now(), key='fecha_tasa_emicion')
+        tasa_facial = st.number_input('Tasa de facial', min_value=0.0000, value=0.0000, format='%f', key='tasa_facial')
+    with col2:
+        fecha_compra = st.date_input('Fecha compra', value=datetime.now(), min_value=datetime.now(), key='fecha_compra')
+        valor_inicial = st.number_input('Valor inicial de la inversión', min_value=0, value=1000000, format='%i', key='valor_inicial')
+    with col3:
+        fecha_vencimiento = st.date_input('Fecha de vencimiento del bono', min_value=fecha_compra + pd.Timedelta(days=365), value=fecha_compra + pd.Timedelta(days=365), key='fecha_vencimiento')
+        tasa_referencia = st.number_input('Tasa actual del mercado', min_value=0.0000, value=0.0000, format='%f', key='tasa_referencia')
+    precio_bono = calcular_precio_bono(fecha_emision, fecha_compra, fecha_vencimiento,tasa_facial,tasa_referencia, valor_inicial)
+    precio_bono_formatted = "{:,.2f}".format(precio_bono)
+    st.write(f'Valor actual del bono: {precio_bono_formatted}')
 with tab2:
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -140,14 +176,14 @@ with tab3:
     col1, col2, col3 = st.columns(3)
     with col1:
         t = st.date_input("Fecha de emisión", min_value=fecha_actual, max_value=fecha_mayor) # fe : fecha emisión
-        c = st.number_input('Ingrese la tasa de emisión : ', format="%f")# tc : tasa cupon
+        c = st.number_input('Ingrese la tasa de emisión (INT): ', format="%f")# tc : tasa cupon
     with col2:
         T = st.date_input("Fecha de vencimiento", min_value=fecha_actual, max_value=fecha_mayor)
-        r = st.number_input('Ingrese la tasa de negociación : ', format="%f") # tn : tasa de negociación
+        r = st.number_input('Ingrese la tasa de negociación (FLOAT): ', format="%f",value=0.01) # tn : tasa de negociación
     with col3:
         f_c = st.date_input("Fecha de compra", min_value=t, max_value=T) # fc : fecha compra
         valor_bond = st.number_input('Ingrese el valor del bono : ')
     
     #st.write('El valor presente del bono es:', valor_presente(c,r,valor_bond,t,f_c,T))
     col1,col2 = st.columns(2)
-    col1.metric('Valor bono', value = valor_presente(c,r,valor_bond,t,f_c,T), delta =valor_presente(c,r,valor_bond,t,f_c,T)- valor_bond)
+    col1.metric('Valor bono', value = valor_presente(c,r,valor_bond,t,f_c,T), delta =round((valor_presente(c,r,valor_bond,t,f_c,T)- valor_bond),2))
