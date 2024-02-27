@@ -9,3 +9,5 @@ plotly==5.3.1
 streamlit-extras
 yfinance==0.1.63
 pandas_datareader
+scipy
+stastsmodels
