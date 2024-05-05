@@ -62,7 +62,7 @@ option_data = [
     {'icon': "", 'label': 'Principal'},
     {'icon': "", 'label': 'Bonos'},
     {'icon': "", 'label': 'Acciones'},
-    {'icon': "", 'label': 'Criptomenadas'}
+    {'icon': "", 'label': 'Criptomonedas'}
 ]
 
 # Define el tema para el NavBar

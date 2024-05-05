@@ -12,6 +12,11 @@ from urllib3.exceptions import MaxRetryError, NewConnectionError
 # Funciones para obtener datos de precios de acciones
 
 
+def get_symbols(market):
+    nyse_symbols = pd.read_csv(f'././data/db/{market}.csv', header=0)
+    return nyse_symbols
+
+
 def get_stock_data(ticker, start_date, end_date, max_retries=3):
     for _ in range(max_retries):
         try:

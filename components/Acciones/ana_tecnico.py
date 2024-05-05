@@ -3,37 +3,30 @@ import pandas as pd
 import datetime
 import plotly.graph_objects as go
 from streamlit_extras.metric_cards import style_metric_cards
-from src.funcionesAcciones import get_stock_data, get_stock_cumulative_returns, calcular_alpha_beta
+from src.funcionesAcciones import get_stock_data, get_stock_cumulative_returns, calcular_alpha_beta, get_symbols
+from finvizfinance.quote import finvizfinance
 
 file1 = open('././markdown/capm.md').read()
 
 
 def analisis_tec():
 
-    def get_nyse_symbols():
-        nyse_symbols = pd.read_csv(
-            '././data/db/nasdaq_screener.csv', header=0)
-        return nyse_symbols
+    # ------------------Sidebar---------------------------------
 
-    # -------------------------------------------------------------
-    # Streamlit app
-    st.title("Modelo CAPM")
+    st.sidebar.subheader("Escoge un Mercado Bursatil")
 
-    st.markdown(file1)
-    # -------------------------------------------------------------
+    # Menú desplegable para seleccionar el índice del mercado
+    market = ['NYSE', 'AMEX', 'NASDAQ']
+    market_selected = st.sidebar.selectbox(
+        "Selecciona una bolsa de valores de EEUU:", market)
 
-    # Obtener la lista de símbolos de las empresas que cotizan en el NYSE
-
-    nyse_symbols = get_nyse_symbols()
-    # -------------------------------------------------------------
+    symbols = get_symbols(market_selected)
 
     # Fechas de inicio y fin
-    end_date = datetime.datetime(2024, 2, 1)  # datetime.datetime.now()
+    # datetime.datetime(2024, 2, 1)  # datetime.datetime.now()
+    end_date = datetime.datetime.now()
     start_date = end_date - datetime.timedelta(days=5*365)
 
-    # -------------------------------------------------------------
-
-    # Mapeo de siglas a nombres completos
     index_mapping = {
         "^GSPC": "S&P 500",
         "^DJI": "Dow Jones",
@@ -41,29 +34,22 @@ def analisis_tec():
         "^RUT": "Russell 2000"
     }
 
-    # -------------------------------------------------------------
-    # Sidebar
+    ticker_list = symbols['Symbol'].to_list()
+    default_tickers = ['NVDA', 'TSLA']
 
-    # Input form in the sidebar
-    st.sidebar.title("Parámetros")
+    for ticker in default_tickers:
+        if ticker not in ticker_list:
+            ticker_list.append(ticker)
 
-    # Menú desplegable para seleccionar las empresas
+    # Create the multiselect with updated ticker list
     selected_tickers = st.sidebar.multiselect(
-        "Selecciona acciones:", nyse_symbols['Symbol'].to_list(), default=None,
-    )
+        "Selecciona acciones:", ticker_list, default=default_tickers)
 
     if not selected_tickers:
         st.warning("Por favor, selecciona al menos una acción.")
         st.stop()
 
-    # Menú desplegable para seleccionar el índice del mercado
-    market_ticker_options = list(index_mapping.values())
-    selected_index_name = st.sidebar.selectbox(
-        "Selecciona referencia de mercado:", market_ticker_options)
-
-    # Obtener la sigla correspondiente al índice seleccionado
-    market_ticker = [key for key, value in index_mapping.items(
-    ) if value == selected_index_name][0]
+    # -------------------------------------------------------------
 
     # Obtener datos de precios de las acciones seleccionadas
     stock_prices = [get_stock_data(ticker, start_date, end_date)
@@ -76,225 +62,141 @@ def analisis_tec():
     df_stock_prices = pd.concat(stock_prices, axis=1)
     df_stock_returns = pd.concat(stock_returns, axis=1)
 
-    # -------------------------------------------------------------
-    # Configuraciones para la tabla
-    # Ajusta según la cantidad de activos
-    table_height, table_width = 300, 250
+    # ------------------------------------------------------------------------------
+    selected_ticker = st.selectbox(
+        "Seleccione una acción:", selected_tickers, index=0)
 
-    with st.expander("Precios"):
-        col1, col2 = st.columns(2)
-        with col1:
-            # Mostrar tabla de precios
-            st.subheader("Precios")
-            st.dataframe(df_stock_prices, height=table_height, width=400)
+    # Verificar si el ticker está presente en los resultados
+
+    if selected_ticker in selected_tickers:
+
+        stock = finvizfinance(selected_ticker)
+        stock_fundament = stock.ticker_fundament()
+
+        style_metric_cards(background_color='rgba(0,0,0,0)',
+                           border_left_color="#003C6F", border_color="#003C6F", box_shadow="blue")
+
+        # Indicadores de valorizacion
+        precio = stock_fundament['Price']
+        ROA = stock_fundament['ROA']
+        PER = stock_fundament['P/E']
+        Quick_Ratio = stock_fundament['Quick Ratio']
+        Debt_Eq = stock_fundament['Debt/Eq']
+        beta = stock_fundament['Beta']
+
+        col1, col2, col3, col4, col5, col6 = st.columns(6)
+        col1.metric('Precio:', value=precio)
+        col2.metric('ROA:', value=ROA)
+        col3.metric('P/E Ratio:', value=PER)
+        col4.metric('Quick Ratio:', value=Quick_Ratio)
+        col5.metric('Debt/Eq:', value=Debt_Eq)
+        col6.metric('Beta:', value=beta)
+
+    precios = go.Figure()
+    for i, stock_prices_df in enumerate(stock_prices):
+        precios.add_trace(go.Scatter(
+            x=stock_prices_df.index, y=stock_prices_df.iloc[:, 0].values, mode='lines', name=f'{selected_tickers[i]}'))
+    precios.update_xaxes(tickcolor='white', tickfont=dict(
+        color='white'), title=dict(text='Fecha', font=dict(color='white')))
+    precios.update_yaxes(tickcolor='white', tickfont=dict(
+        color='white'), title=dict(text='Precio de cierre', font=dict(color='white')))
+    precios.update_layout(
+        title=dict(
+            text='Precios mensuales ultimos 5 años',
+            font=dict(color='white', size=20),
+            x=0.2,
+            y=0.95
+        ),
+        width=750,
+        height=400,
+        legend=dict(font=dict(color='white')),
+        # Fondo del papel transparente
+        paper_bgcolor='rgba(0,0,0,0)',
+        # Fondo del gráfico transparente
+        plot_bgcolor='rgba(0,0,0,0)',
+        xaxis_showgrid=True,
+        yaxis_showgrid=True,
+        xaxis_ticks='outside',
+        yaxis_ticks='outside',
+        xaxis_linecolor='white',
+        yaxis_linecolor='white',
+        showlegend=True,
+        # Color de la cuadrícula del eje x con alpha
+        xaxis_gridcolor='rgba(255, 255, 255, 0.1)',
+        # Color de la cuadrícula del eje x con alpha
+        yaxis_gridcolor='rgba(255, 255, 255, 0.1)',
+        margin=dict(l=0, r=50, b=50, t=50),
+    )
+
+    fig = go.Figure()
+
+    # Agregar las líneas de precios de acciones
+    for i, stock_return_df in enumerate(stock_returns):
+        fig.add_trace(go.Scatter(x=stock_return_df.index, y=stock_return_df.iloc[:, 0],  # Utilizamos iloc para seleccionar la columna
+                                 mode='lines', name=f'{selected_tickers[i]}'))
+
+    # Configurar el diseño del gráfico
+    fig.update_xaxes(tickcolor='white', tickfont=dict(color='white'), title=dict(
+        text='Fecha', font=dict(color='white')))
+    fig.update_yaxes(tickcolor='white', tickfont=dict(color='white'), title=dict(
+        text='Retorno', font=dict(color='white')))
+
+    # Ajustar el título general
+    fig.update_layout(
+        title=dict(
+            text='Retornos mensuales ultimos 5 años',
+            font=dict(color='white', size=20),
+            x=0.2,
+            y=0.95
+        ),
+        width=750,
+        height=400,
+        legend=dict(font=dict(color='white')),
+        # Fondo del papel transparente
+        paper_bgcolor='rgba(0,0,0,0)',
+        # Fondo del gráfico transparente
+        plot_bgcolor='rgba(0,0,0,0)',
+        xaxis_showgrid=True,
+        yaxis_showgrid=True,
+        xaxis_ticks='outside',
+        yaxis_ticks='outside',
+        xaxis_linecolor='white',
+        yaxis_linecolor='white',
+        showlegend=True,
+        # Color de la cuadrícula del eje x con alpha
+        xaxis_gridcolor='rgba(255, 255, 255, 0.1)',
+        # Color de la cuadrícula del eje x con alpha
+        yaxis_gridcolor='rgba(255, 255, 255, 0.1)',
+        margin=dict(l=0, r=50, b=50, t=50),
+    )
+
+    # Botones de radio
+    col1, col2, col3 = st.columns([1.5, 7, 1])
+    with col1:
+        st.title('')
+        st.title('')
+        st.title('')
+        tipo_grafico = col1.radio("", ["Precios", "Retornos"])
+
+    # Mostrar el gráfico correspondiente
+    if tipo_grafico == "Precios":
         with col2:
-            precios = go.Figure()
-            for i, stock_prices_df in enumerate(stock_prices):
-                precios.add_trace(go.Scatter(
-                    x=stock_prices_df.index, y=stock_prices_df.iloc[:, 0].values, mode='lines', name=f'{selected_tickers[i]}'))
-            precios.update_xaxes(tickcolor='white', tickfont=dict(
-                color='white'), title=dict(text='Fecha', font=dict(color='white')))
-            precios.update_yaxes(tickcolor='white', tickfont=dict(
-                color='white'), title=dict(text='Precio de cierre', font=dict(color='white')))
-            precios.update_layout(
-                title=dict(
-                    text='Precios de acciones',
-                    font=dict(color='white', size=20),
-                    x=0.35,
-                    y=0.9
-                ),
-                width=450,
-                height=400,
-                legend=dict(font=dict(color='white')),
-                # Fondo del papel transparente
-                paper_bgcolor='rgba(0,0,0,0)',
-                # Fondo del gráfico transparente
-                plot_bgcolor='rgba(0,0,0,0)',
-                xaxis_showgrid=True,
-                yaxis_showgrid=True,
-                xaxis_ticks='outside',
-                yaxis_ticks='outside',
-                xaxis_linecolor='white',
-                yaxis_linecolor='white',
-                showlegend=True,
-                # Color de la cuadrícula del eje x con alpha
-                xaxis_gridcolor='rgba(255, 255, 255, 0.1)',
-                # Color de la cuadrícula del eje x con alpha
-                yaxis_gridcolor='rgba(255, 255, 255, 0.1)',
-                margin=dict(l=0, r=50, b=50, t=50),
-            )
-
             st.plotly_chart(precios)
-
-    # -- Retornos acumulados --
-    with st.expander("Retornos "):
-        col1, col2 = st.columns(2)
-        with col1:
-            # Mostrar tabla de retornos
-            st.subheader("Retornos")
-            st.dataframe(df_stock_returns, height=table_height, width=400)
-
+    else:
         with col2:
-            fig = go.Figure()
-
-            # Agregar las líneas de precios de acciones
-            for i, stock_return_df in enumerate(stock_returns):
-                fig.add_trace(go.Scatter(x=stock_return_df.index, y=stock_return_df.iloc[:, 0],  # Utilizamos iloc para seleccionar la columna
-                                         mode='lines', name=f'{selected_tickers[i]}'))
-
-            # Configurar el diseño del gráfico
-            fig.update_xaxes(tickcolor='white', tickfont=dict(color='white'), title=dict(
-                text='Fecha', font=dict(color='white')))
-            fig.update_yaxes(tickcolor='white', tickfont=dict(color='white'), title=dict(
-                text='Retorno', font=dict(color='white')))
-
-            # Ajustar el título general
-            fig.update_layout(
-                title=dict(
-                    text='Retornos Acumulados',
-                    font=dict(color='white', size=20),
-                    x=0.35,
-                    y=0.9
-                ),
-                width=450,
-                height=400,
-                legend=dict(font=dict(color='white')),
-                # Fondo del papel transparente
-                paper_bgcolor='rgba(0,0,0,0)',
-                # Fondo del gráfico transparente
-                plot_bgcolor='rgba(0,0,0,0)',
-                xaxis_showgrid=True,
-                yaxis_showgrid=True,
-                xaxis_ticks='outside',
-                yaxis_ticks='outside',
-                xaxis_linecolor='white',
-                yaxis_linecolor='white',
-                showlegend=True,
-                # Color de la cuadrícula del eje x con alpha
-                xaxis_gridcolor='rgba(255, 255, 255, 0.1)',
-                # Color de la cuadrícula del eje x con alpha
-                yaxis_gridcolor='rgba(255, 255, 255, 0.1)',
-                margin=dict(l=0, r=50, b=50, t=50),
-            )
-            # Mostrar el gráfico en Streamlit
             st.plotly_chart(fig)
 
-    resultados, fig = calcular_alpha_beta(
-        start_date, end_date, selected_tickers, market_ticker)
-    # Verificar si hay resultados antes de iterar sobre los tickers
-    if resultados:
-        # Obtén el ticker seleccionado
-        selected_ticker = st.selectbox(
-            "Seleccione una acción:", selected_tickers, index=0)
+    # -------------- tablas -------------------------------------
 
-        # Verificar si el ticker está presente en los resultados
-        if selected_ticker in resultados:
-            col1, col2, col3 = st.columns(3)
-            col1.metric('Market Ticker:',
-                        value=index_mapping[market_ticker])
-            col2.metric('Alpha (Jensen):', value=round(
-                resultados[selected_ticker]['alpha'], 4))
-            col3.metric('Beta:', value=round(
-                resultados[selected_ticker]['beta'], 1))
-            style_metric_cards(background_color='rgba(0,0,0,0)',
-                               border_left_color="#003C6F", border_color="#003C6F", box_shadow="blue")
-            st.write("----")
+    col1, col2 = st.columns((3, 3))
 
-            # Gráfico CAPM
-            left, middle, right = st.columns((2, 8, 2))
-            with middle:
-                st.title("Gráfico CAPM")
-                st.plotly_chart(fig)
+    with col1:
 
-            # Continuar con el resto del código (gráficos de Betas y Alphas)
+        st.subheader("Precios")
+        st.dataframe(df_stock_prices, height=300, width=450)
 
-        else:
-            st.warning(
-                f"No se encontraron resultados para el ticker {selected_ticker}.")
+    with col2:
+        st.subheader("Retornos")
+        st.dataframe(df_stock_returns, height=300, width=450)
 
-    tabla, gb, ga = st.columns((3, 4, 4))
-
-    with tabla:
-        st.subheader('Resultados')
-        st.dataframe(pd.DataFrame(resultados).transpose(),
-                     width=200, height=300)
-
-    with gb:
-        # Crear un gráfico de barras para los Betas
-        fig_betas = go.Figure()
-
-        # Iterar sobre los tickers seleccionados
-        for ticker in selected_tickers:
-            # Calcular los Betas
-            if ticker in resultados:
-                # Agregar una barra para el Beta de la acción actual
-                fig_betas.add_trace(
-                    go.Bar(x=[ticker], y=[resultados[ticker]['beta']], name=ticker))
-            else:
-                st.warning(
-                    f"No se encontraron resultados para el ticker {ticker}.")
-
-        # Configurar el diseño del gráfico de Betas
-        fig_betas.update_layout(
-            title=dict(
-                text='Beta',
-                font=dict(color='white', size=20),
-                x=0.4,
-                y=0.9
-            ),
-            width=330,
-            height=400,
-            xaxis_title='Acción',
-            yaxis_title='Beta',
-            barmode='group',
-            showlegend=False,
-            paper_bgcolor='rgba(0,0,0,0)',  # Fondo del papel transparente
-            # Fondo del gráfico transparente
-            plot_bgcolor='rgba(0,0,0,0)',
-            xaxis=dict(tickfont=dict(color='white')),
-            yaxis=dict(tickfont=dict(color='white')),
-            font=dict(color='white'),
-        )
-
-        # Mostrar el gráfico de Betas en Streamlit
-        st.plotly_chart(fig_betas)
-
-    with ga:
-        # Crear un gráfico de barras para los Alphas
-        fig_alphas = go.Figure()
-
-        # Iterar sobre los tickers seleccionados
-        for ticker in selected_tickers:
-            # Calcular los Alphas
-            if ticker in resultados:
-                # Agregar una barra para el Alpha de la acción actual
-                fig_alphas.add_trace(
-                    go.Bar(x=[ticker], y=[resultados[ticker]['alpha']], name=ticker))
-            else:
-                st.warning(
-                    f"No se encontraron resultados para el ticker {ticker}.")
-
-        # Configurar el diseño del gráfico de Alphas
-        fig_alphas.update_layout(
-            title=dict(
-                text='Alpha',
-                font=dict(color='white', size=20),
-                x=0.4,
-                y=0.9
-            ),
-            width=400,
-            height=400,
-            xaxis_title='Acción',
-            yaxis_title='Alpha',
-            barmode='group',
-            showlegend=True,
-            paper_bgcolor='rgba(0,0,0,0)',  # Fondo del papel transparente
-            # Fondo del gráfico transparente
-            plot_bgcolor='rgba(0,0,0,0)',
-            xaxis=dict(tickfont=dict(color='white')),
-            yaxis=dict(tickfont=dict(color='white')),
-            font=dict(color='white'),
-        )
-
-        # Mostrar el gráfico de Alphas en Streamlit
-        st.plotly_chart(fig_alphas)
+    # ------------------------------------------------------------

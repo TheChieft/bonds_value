@@ -1,6 +1,7 @@
 import streamlit as st
 import hydralit_components as hc
 from components.Acciones.ana_tecnico import analisis_tec
+from components.Acciones.valoracion import valoracion
 
 
 def Acciones():
@@ -31,8 +32,6 @@ def Acciones():
     # Crea el NavBar con los datos y el tema especificados
     # -------------------------------------------------------------
 
-    st.divider()
-
     chosen_tab = hc.option_bar(
         option_definition=option_data,
         title='',
@@ -44,7 +43,7 @@ def Acciones():
         analisis_tec()
 
     elif chosen_tab == b:
-        pass
+        valoracion()
 
     elif chosen_tab == c:
         pass
