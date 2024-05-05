@@ -1,16 +1,4 @@
 import streamlit as st
-import pandas as pd
-import yfinance as yf
-import pandas_datareader.data as web
-import numpy as np
-import datetime
-import plotly.graph_objects as go
-from scipy.stats import linregress
-import statsmodels.api as sm
-from streamlit_extras.metric_cards import style_metric_cards
-from src.funcionesAcciones import get_stock_data, get_stock_cumulative_returns, calcular_alpha_beta
-import matplotlib.pyplot as plt
-from plotly.subplots import make_subplots
 import hydralit_components as hc
 from components.Acciones.ana_tecnico import analisis_tec
 
