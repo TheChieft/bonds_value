@@ -13,10 +13,9 @@ st.set_page_config(
 
 
 with st.sidebar:
-    st.image("assets/images/logo.png")
-    "# Titulo"
-    "## Subtitulo"
-    '#'
+    st.image("assets/images/LOGO.png")
+    "Tu guía inteligente para inversiones informadas basado en ciencia de datos."
+    ''
 
 # --------------- menú -------------------------
 
