@@ -62,6 +62,7 @@ def analisis_tec():
     df_stock_prices = pd.concat(stock_prices, axis=1)
     df_stock_returns = pd.concat(stock_returns, axis=1)
 
+    st.divider()
     # ------------------------------------------------------------------------------
     selected_ticker = st.selectbox(
         "Seleccione una acción:", selected_tickers, index=0)
@@ -199,4 +200,5 @@ def analisis_tec():
         st.subheader("Retornos")
         st.dataframe(df_stock_returns, height=300, width=450)
 
+    st.divider()
     # ------------------------------------------------------------

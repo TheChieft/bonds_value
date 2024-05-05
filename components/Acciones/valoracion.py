@@ -66,6 +66,7 @@ def valoracion():
     # -------------------------------------------------------------
     # Gráfico CAPM
     # -------------------------------------------------------------
+    st.divider()
 
     st.header("Modelo CAPM")
 
@@ -169,3 +170,4 @@ def valoracion():
 
         # Mostrar el gráfico de Alphas en Streamlit
         st.plotly_chart(fig_alphas)
+    st.divider()
