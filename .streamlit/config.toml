@@ -1,5 +1,12 @@
 [theme]
-base="dark"
 primaryColor="#003c6f"
+backgroundColor="#000000"
 secondaryBackgroundColor="#000020"
-textColor="#ffffff"
+textColor="white"
+font="sans serif"
+
+[browser]
+gatherUsageStats = false
+
+[deprecation]
+showPyplotGlobalUse = false
