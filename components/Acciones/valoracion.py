@@ -1,11 +1,9 @@
-import streamlit as st
-import pandas as pd
 import datetime
+import pandas as pd
+import streamlit as st
 import plotly.graph_objects as go
-from streamlit_extras.metric_cards import style_metric_cards
-from src.funcionesAcciones import get_stock_data, get_stock_cumulative_returns, calcular_alpha_beta, get_symbols
-from finvizfinance.quote import finvizfinance
 
+from src.funcionesAcciones import calcular_alpha_beta, get_symbols
 from components.text import text
 
 md1 = open('././markdown/capm.md').read()
@@ -66,30 +64,23 @@ def valoracion():
     # Verificar si hay resultados antes de iterar sobre los tickers
 
     # -------------------------------------------------------------
-    # Gráfico CAPM
-    # -------------------------------------------------------------
     st.divider()
 
-    st.header("Modelo CAPM")
-
-    st.markdown(
-        '''
-        
-        Como representación de mercado de Estados Unidos se utiliza en la práctica un índice bursátil representativo de 
-        las acciones que en él cotizan, tales como el Dow Jones, S&P 500, Nasdaq Composite y Russell 2000, por defecto se toma el S&P 500
-        y se recomienda porque incluye 500 de las empresas más grandes y representativas cotizadas en las bolsas de valores de EE.UU. 
-        Estas empresas provienen de diversos sectores, lo que lo convierte en un buen indicador de la salud general del mercado estadounidense.
-        ''')
-
-    texto = text('Modelo CAPM', 4)
-    texto.text(md1)
     # -------------------------------------------------------------
 
-    left, middle, right = st.columns((1, 8, 1))
+    left, middle = st.columns((4, 7))
+
+    with left:
+
+        texto = text('Modelo CAPM', 4)
+        texto.text(md1)
+
     with middle:
-        st.plotly_chart(fig)
 
-    # -------------------------------------------------------------
+        # -------------------------------------------------------------
+        # Gráfico CAPM
+        st.plotly_chart(fig)
+        # -------------------------------------------------------------
 
     tabla, gb, ga = st.columns((2, 4, 4))
 
@@ -175,4 +166,5 @@ def valoracion():
 
         # Mostrar el gráfico de Alphas en Streamlit
         st.plotly_chart(fig_alphas)
+
     st.divider()

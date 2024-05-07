@@ -154,8 +154,8 @@ def calcular_alpha_beta(start_date, end_date, acciones_ticker, mercado_ticker=['
             ),
             # showlegend=True,
             legend=dict(font=dict(color='white')),
-            width=700,
-            height=500,
+            width=600,
+            height=400,
             paper_bgcolor='rgba(0,0,0,0)',  # Fondo del papel transparente
             plot_bgcolor='rgba(0,0,0,0)',   # Fondo del gráfico transparente
             xaxis_showgrid=True,
@@ -168,7 +168,8 @@ def calcular_alpha_beta(start_date, end_date, acciones_ticker, mercado_ticker=['
             # Color de la cuadrícula del eje x con alpha
             xaxis_gridcolor='rgba(255, 255, 255, 0.1)',
             # Color de la cuadrícula del eje x con alpha
-            yaxis_gridcolor='rgba(255, 255, 255, 0.1)'
+            yaxis_gridcolor='rgba(255, 255, 255, 0.1)',
+            margin=dict(l=0, r=0, b=0, t=70),
         )
 
     return resultados_dict, fig
