@@ -6,7 +6,9 @@ from streamlit_extras.metric_cards import style_metric_cards
 from src.funcionesAcciones import get_stock_data, get_stock_cumulative_returns, calcular_alpha_beta, get_symbols
 from finvizfinance.quote import finvizfinance
 
-file1 = open('././markdown/capm.md').read()
+from components.text import text
+
+md1 = open('././markdown/capm.md').read()
 
 
 def valoracion():
@@ -78,6 +80,9 @@ def valoracion():
         y se recomienda porque incluye 500 de las empresas más grandes y representativas cotizadas en las bolsas de valores de EE.UU. 
         Estas empresas provienen de diversos sectores, lo que lo convierte en un buen indicador de la salud general del mercado estadounidense.
         ''')
+
+    texto = text('Modelo CAPM', 4)
+    texto.text(md1)
     # -------------------------------------------------------------
 
     left, middle, right = st.columns((1, 8, 1))
