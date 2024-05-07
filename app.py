@@ -6,9 +6,9 @@ import hydralit_components as hc
 
 # Configuración de la página
 st.set_page_config(
-    page_title='DeFi II',
-    initial_sidebar_state="expanded"
-    # page_icon="assets/images/JML-sin-fondo.png",
+    page_title='FT',
+    initial_sidebar_state="expanded",
+    page_icon="assets/images/ICONO.png"
 )
 
 
@@ -23,6 +23,7 @@ max_width_str = f"max-width: {90}%;"
 
 st.markdown(f"""
         <style>
+            
         .appview-container .main .block-container{{{max_width_str}}}
         </style>
         """,
