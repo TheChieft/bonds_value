@@ -1,5 +1,6 @@
 import streamlit as st
 from navigation.Acciones import Acciones
+from navigation.Criptomondedas import Criptomonedas
 from components.footer import footer_style
 import hydralit_components as hc
 
@@ -91,4 +92,4 @@ if chosen_tab == acciones:
     pass
 
 if chosen_tab == criptomonedas:
-    pass
+    Criptomonedas()
