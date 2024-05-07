@@ -1,6 +1,8 @@
 import streamlit as st
 from navigation.Acciones import Acciones
+from navigation.Principal import Principal
 from navigation.Criptomondedas import Criptomonedas
+from navigation.Bonds import Bonds
 from components.footer import footer_style
 import hydralit_components as hc
 
@@ -83,14 +85,14 @@ chosen_tab = hc.option_bar(
     horizontal_orientation=True)
 
 
-if chosen_tab == acciones:
-    Acciones()
+if chosen_tab == principal:
+    Principal()
 
 if chosen_tab == bonos:
-    pass
+    Bonds()
 
 if chosen_tab == acciones:
-    pass
+    Acciones()
 
 if chosen_tab == criptomonedas:
     Criptomonedas()

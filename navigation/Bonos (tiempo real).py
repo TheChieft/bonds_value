@@ -32,7 +32,6 @@ df_sin_cupon = qualifying_bsin(INFO_DATAFRAME)
 def precio_bono_sin_cupon(F, r, n, t):
     return F / (1 + r/n)**(n*t)
 
-
 st.set_page_config(layout="wide", page_title='Valuación de Instrumentos Financieros', page_icon=':dollar:', initial_sidebar_state='auto')
 
 # MAIN ---------------------------------------
