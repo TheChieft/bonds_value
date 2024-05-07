@@ -1,201 +1,201 @@
 ID,Nombre,Símbolo
-bitcoin,Bitcoin,btc
-ethereum,Ethereum,eth
-tether,Tether,usdt
-binancecoin,BNB,bnb
-solana,Solana,sol
-usd-coin,USDC,usdc
-ripple,XRP,xrp
-staked-ether,Lido Staked Ether,steth
-dogecoin,Dogecoin,doge
-the-open-network,Toncoin,ton
-cardano,Cardano,ada
-avalanche-2,Avalanche,avax
-shiba-inu,Shiba Inu,shib
-tron,TRON,trx
-wrapped-bitcoin,Wrapped Bitcoin,wbtc
-polkadot,Polkadot,dot
-bitcoin-cash,Bitcoin Cash,bch
-chainlink,Chainlink,link
-near,NEAR Protocol,near
-matic-network,Polygon,matic
-fetch-ai,Fetch.ai,fet
-litecoin,Litecoin,ltc
-internet-computer,Internet Computer,icp
-uniswap,Uniswap,uni
-dai,Dai,dai
-leo-token,LEO Token,leo
-hedera-hashgraph,Hedera,hbar
-ethereum-classic,Ethereum Classic,etc
-render-token,Render,rndr
-aptos,Aptos,apt
-first-digital-usd,First Digital USD,fdusd
-cosmos,Cosmos Hub,atom
-pepe,Pepe,pepe
-dogwifcoin,dogwifhat,wif
-crypto-com-chain,Cronos,cro
-mantle,Mantle,mnt
-filecoin,Filecoin,fil
-blockstack,Stacks,stx
-immutable-x,Immutable,imx
-stellar,Stellar,xlm
-xtcom-token,XT.com,xt
-wrapped-eeth,Wrapped eETH,weeth
-okb,OKB,okb
-renzo-restaked-eth,Renzo Restaked ETH,ezeth
-bittensor,Bittensor,tao
-optimism,Optimism,op
-arbitrum,Arbitrum,arb
-arweave,Arweave,ar
-the-graph,The Graph,grt
-vechain,VeChain,vet
-kaspa,Kaspa,kas
-maker,Maker,mkr
-sui,Sui,sui
-monero,Monero,xmr
-injective-protocol,Injective,inj
-ethena-usde,Ethena USDe,usde
-theta-token,Theta Network,theta
-fantom,Fantom,ftm
-celestia,Celestia,tia
-thorchain,THORChain,rune
-floki,FLOKI,floki
-rocket-pool-eth,Rocket Pool ETH,reth
-lido-dao,Lido DAO,ldo
-bonk,Bonk,bonk
-coredaoorg,Core,core
-gala,GALA,gala
-bitget-token,Bitget Token,bgb
-algorand,Algorand,algo
-jupiter-exchange-solana,Jupiter,jup
-sei-network,Sei,sei
-mantle-staked-ether,Mantle Staked Ether,meth
-whitebit,WhiteBIT Coin,wbt
-quant-network,Quant,qnt
-flow,Flow,flow
-beam-2,Beam,beam
-aave,Aave,aave
-ethena,Ethena,ena
-singularitynet,SingularityNET,agix
-worldcoin-wld,Worldcoin,wld
-bitcoin-cash-sv,Bitcoin SV,bsv
-dydx-chain,dYdX,dydx
-ondo-finance,Ondo,ondo
-zebec-protocol,Zebec Protocol,zbc
-ribbon-finance,Ribbon Finance,rbn
-bittorrent,BitTorrent,btt
-wormhole,Wormhole,w
-flare-networks,Flare,flr
-akash-network,Akash Network,akt
-neo,NEO,neo
-chiliz,Chiliz,chz
-elrond-erd-2,MultiversX,egld
-gatechain-token,Gate,gt
-axie-infinity,Axie Infinity,axs
-kucoin-shares,KuCoin,kcs
-the-sandbox,The Sandbox,sand
-ecash,eCash,xec
-tokenize-xchange,Tokenize Xchange,tkx
-starknet,Starknet,strk
-msol,Marinade Staked SOL,msol
-eos,EOS,eos
-jasmycoin,JasmyCoin,jasmy
-tezos,Tezos,xtz
-havven,Synthetix Network,snx
-ronin,Ronin,ron
-mina-protocol,Mina Protocol,mina
-helium,Helium,hnt
-cheelee,Cheelee,cheel
-conflux-token,Conflux,cfx
-book-of-meme,BOOK OF MEME,bome
-ordinals,ORDI,ordi
-decentraland,Decentraland,mana
-pyth-network,Pyth Network,pyth
-gnosis,Gnosis,gno
-kelp-dao-restaked-eth,Kelp DAO Restaked ETH,rseth
-nervos-network,Nervos Network,ckb
-aioz-network,AIOZ Network,aioz
-ether-fi-staked-eth,ether.fi Staked ETH,eeth
-axelar,Axelar,axl
-apecoin,ApeCoin,ape
-dexe,DeXe,dexe
-iota,IOTA,iota
-echelon-prime,Echelon Prime,prime
-kava,Kava,kava
-safe,Safe,safe
-usdd,USDD,usdd
-nexo,NEXO,nexo
-lido-staked-sol,Lido Staked SOL,stsol
-pancakeswap-token,PancakeSwap,cake
-theta-fuel,Theta Fuel,tfuel
-oasis-network,Oasis Network,rose
-klay-token,Klaytn,klay
-ocean-protocol,Ocean Protocol,ocean
-bitcoin-gold,Bitcoin Gold,btg
-sweth,Swell Ethereum,sweth
-frax,Frax,frax
-mantra-dao,MANTRA,om
-terra-luna,Terra Luna Classic,lunc
-blur,Blur,blur
-frax-ether,Frax Ether,frxeth
-illuvium,Illuvium,ilv
-fasttoken,Fasttoken,ftn
-golem,Golem,glm
-osmosis,Osmosis,osmo
-wemix-token,WEMIX,wemix
-dydx,dYdX,ethdydx
-arkham,Arkham,arkm
-sats-ordinals,SATS (Ordinals),sats
-tether-gold,Tether Gold,xaut
-coinbase-wrapped-staked-eth,Coinbase Wrapped Staked ETH,cbeth
-woo-network,WOO,woo
-popcat,Popcat,popcat
-astar,Astar,astr
-dymension,Dymension,dym
-curve-dao-token,Curve DAO,crv
-venom,Venom,venom
-iotex,IoTeX,iotx
-true-usd,TrueUSD,tusd
-xdce-crowd-sale,XDC Network,xdc
-livepeer,Livepeer,lpt
-altlayer,AltLayer,alt
-pendle,Pendle,pendle
-aerodrome-finance,Aerodrome Finance,aero
-staked-frax-ether,Staked Frax Ether,sfrxeth
-mx-token,MX,mx
-corgiai,CorgiAI,corgiai
-ankr,Ankr Network,ankr
-trust-wallet-token,Trust Wallet,twt
-ethereum-name-service,Ethereum Name Service,ens
-raydium,Raydium,ray
-ether-fi,Ether.fi,ethfi
-radix,Radix,xrd
-apenft,APENFT,nft
-jito-governance-token,Jito,jto
-memecoin-2,Memecoin,meme
-zilliqa,Zilliqa,zil
-1inch,1inch,1inch
-superfarm,SuperVerse,super
-manta-network,Manta Network,manta
-enjincoin,Enjin Coin,enj
-project-galaxy,Galxe,gal
-celo,Celo,celo
-amp-token,Amp,amp
-stepn,GMT,gmt
-holotoken,Holo,hot
-pax-gold,PAX Gold,paxg
-ravencoin,Ravencoin,rvn
-polymesh,Polymesh,polyx
-terra-luna-2,Terra,luna
-0x,0x Protocol,zrx
-rocket-pool,Rocket Pool,rpl
-siacoin,Siacoin,sc
-ethereum-pow-iou,EthereumPoW,ethw
-aelf,aelf,elf
-skale,SKALE,skl
-zetachain,ZetaChain,zeta
-qtum,Qtum,qtum
-compound-governance-token,Compound,comp
-stader-ethx,Stader ETHx,ethx
-cat-in-a-dogs-world,cat in a dogs world,mew
-compound-wrapped-btc,cWBTC,cwbtc
+bitcoin,Bitcoin,BTC
+ethereum,Ethereum,ETH
+tether,Tether,USDT
+binancecoin,BNB,BNB
+solana,Solana,SOL
+usd-coin,USDC,USDC
+ripple,XRP,XRP
+staked-ether,Lido Staked Ether,STETH
+dogecoin,Dogecoin,DOGE
+the-open-network,Toncoin,TON
+cardano,Cardano,ADA
+avalanche-2,Avalanche,AVAX
+shiba-inu,Shiba Inu,SHIB
+tron,TRON,TRX
+wrapped-bitcoin,Wrapped Bitcoin,WBTC
+polkadot,Polkadot,DOT
+bitcoin-cash,Bitcoin Cash,BCH
+chainlink,Chainlink,LINK
+near,NEAR Protocol,NEAR
+matic-network,Polygon,MATIC
+fetch-ai,Fetch.ai,FET
+litecoin,Litecoin,LTC
+internet-computer,Internet Computer,ICP
+uniswap,Uniswap,UNI
+dai,Dai,DAI
+leo-token,LEO Token,LEO
+hedera-hashgraph,Hedera,HBAR
+ethereum-classic,Ethereum Classic,ETC
+render-token,Render,RNDR
+aptos,Aptos,APT
+first-digital-usd,First Digital USD,FDUSD
+cosmos,Cosmos Hub,ATOM
+pepe,Pepe,PEPE
+dogwifcoin,dogwifhat,WIF
+crypto-com-chain,Cronos,CRO
+mantle,Mantle,MNT
+filecoin,Filecoin,FIL
+blockstack,Stacks,STX
+immutable-x,Immutable,IMX
+stellar,Stellar,XLM
+xtcom-token,XT.com,XT
+wrapped-eeth,Wrapped eETH,WEETH
+okb,OKB,OKB
+renzo-restaked-eth,Renzo Restaked ETH,EZETH
+bittensor,Bittensor,TAO
+optimism,Optimism,OP
+arbitrum,Arbitrum,ARB
+arweave,Arweave,AR
+the-graph,The Graph,GRT
+vechain,VeChain,VET
+kaspa,Kaspa,KAS
+maker,Maker,MKR
+sui,Sui,SUI
+monero,Monero,XMR
+injective-protocol,Injective,INJ
+ethena-usde,Ethena USDe,USDE
+theta-token,Theta Network,THETA
+fantom,Fantom,FTM
+celestia,Celestia,TIA
+thorchain,THORChain,RUNE
+floki,FLOKI,FLOKI
+rocket-pool-eth,Rocket Pool ETH,RETH
+lido-dao,Lido DAO,LDO
+bonk,Bonk,BONK
+coredaoorg,Core,CORE
+gala,GALA,GALA
+bitget-token,Bitget Token,BGB
+algorand,Algorand,ALGO
+jupiter-exchange-solana,Jupiter,JUP
+sei-network,Sei,SEI
+mantle-staked-ether,Mantle Staked Ether,METH
+whitebit,WhiteBIT Coin,WBT
+quant-network,Quant,QNT
+flow,Flow,FLOW
+beam-2,Beam,BEAM
+aave,Aave,AAVE
+ethena,Ethena,ENA
+singularitynet,SingularityNET,AGIX
+worldcoin-wld,Worldcoin,WLD
+bitcoin-cash-sv,Bitcoin SV,BSV
+dydx-chain,dYdX,DYDX
+ondo-finance,Ondo,ONDO
+zebec-protocol,Zebec Protocol,ZBC
+ribbon-finance,Ribbon Finance,RBN
+bittorrent,BitTorrent,BTT
+wormhole,Wormhole,W
+flare-networks,Flare,FLR
+akash-network,Akash Network,AKT
+neo,NEO,NEO
+chiliz,Chiliz,CHZ
+elrond-erd-2,MultiversX,EGLD
+gatechain-token,Gate,GT
+axie-infinity,Axie Infinity,AXS
+kucoin-shares,KuCoin,KCS
+the-sandbox,The Sandbox,SAND
+ecash,eCash,XEC
+tokenize-xchange,Tokenize Xchange,TKX
+starknet,Starknet,STRK
+msol,Marinade Staked SOL,MSOL
+eos,EOS,EOS
+jasmycoin,JasmyCoin,JASMY
+tezos,Tezos,XTZ
+havven,Synthetix Network,SNX
+ronin,Ronin,RON
+mina-protocol,Mina Protocol,MINA
+helium,Helium,HNT
+cheelee,Cheelee,CHEEL
+conflux-token,Conflux,CFX
+book-of-meme,BOOK OF MEME,BOME
+ordinals,ORDI,ORDI
+decentraland,Decentraland,MANA
+pyth-network,Pyth Network,PYTH
+gnosis,Gnosis,GNO
+kelp-dao-restaked-eth,Kelp DAO Restaked ETH,RSETH
+nervos-network,Nervos Network,CKB
+aioz-network,AIOZ Network,AIOZ
+ether-fi-staked-eth,ether.fi Staked ETH,EETH
+axelar,Axelar,AXL
+apecoin,ApeCoin,APE
+dexe,DeXe,DEXE
+iota,IOTA,IOTA
+echelon-prime,Echelon Prime,PRIME
+kava,Kava,KAVA
+safe,Safe,SAFE
+usdd,USDD,USDD
+nexo,NEXO,NEXO
+lido-staked-sol,Lido Staked SOL,STSOL
+pancakeswap-token,PancakeSwap,CAKE
+theta-fuel,Theta Fuel,TFUEL
+oasis-network,Oasis Network,ROSE
+klay-token,Klaytn,KLAY
+ocean-protocol,Ocean Protocol,OCEAN
+bitcoin-gold,Bitcoin Gold,BTG
+sweth,Swell Ethereum,SWETH
+frax,Frax,FRAX
+mantra-dao,MANTRA,OM
+terra-luna,Terra Luna Classic,LUNC
+blur,Blur,BLUR
+frax-ether,Frax Ether,FRXETH
+illuvium,Illuvium,ILV
+fasttoken,Fasttoken,FTN
+golem,Golem,GLM
+osmosis,Osmosis,OSMO
+wemix-token,WEMIX,WEMIX
+dydx,dYdX,ETHDYDX
+arkham,Arkham,ARKM
+sats-ordinals,SATS (Ordinals),SATS
+tether-gold,Tether Gold,XAUT
+coinbase-wrapped-staked-eth,Coinbase Wrapped Staked ETH,CBETH
+woo-network,WOO,WOO
+popcat,Popcat,POPCAT
+astar,Astar,ASTR
+dymension,Dymension,DYM
+curve-dao-token,Curve DAO,CRV
+venom,Venom,VENOM
+iotex,IoTeX,IOTX
+true-usd,TrueUSD,TUSD
+xdce-crowd-sale,XDC Network,XDC
+livepeer,Livepeer,LPT
+altlayer,AltLayer,ALT
+pendle,Pendle,PENDLE
+aerodrome-finance,Aerodrome Finance,AERO
+staked-frax-ether,Staked Frax Ether,SFRXETH
+mx-token,MX,MX
+corgiai,CorgiAI,CORGIAI
+ankr,Ankr Network,ANKR
+trust-wallet-token,Trust Wallet,TWT
+ethereum-name-service,Ethereum Name Service,ENS
+raydium,Raydium,RAY
+ether-fi,Ether.fi,ETHFI
+radix,Radix,XRD
+apenft,APENFT,NFT
+jito-governance-token,Jito,JTO
+memecoin-2,Memecoin,MEME
+zilliqa,Zilliqa,ZIL
+1inch,1inch,1INCH
+superfarm,SuperVerse,SUPER
+manta-network,Manta Network,MANTA
+enjincoin,Enjin Coin,ENJ
+project-galaxy,Galxe,GAL
+celo,Celo,CELO
+amp-token,Amp,AMP
+stepn,GMT,GMT
+holotoken,Holo,HOT
+pax-gold,PAX Gold,PAXG
+ravencoin,Ravencoin,RVN
+polymesh,Polymesh,POLYX
+terra-luna-2,Terra,LUNA
+0x,0x Protocol,ZRX
+rocket-pool,Rocket Pool,RPL
+siacoin,Siacoin,SC
+ethereum-pow-iou,EthereumPoW,ETHW
+aelf,aelf,ELF
+skale,SKALE,SKL
+zetachain,ZetaChain,ZETA
+qtum,Qtum,QTUM
+compound-governance-token,Compound,COMP
+stader-ethx,Stader ETHx,ETHX
+cat-in-a-dogs-world,cat in a dogs world,MEW
+compound-wrapped-btc,cWBTC,CWBTC

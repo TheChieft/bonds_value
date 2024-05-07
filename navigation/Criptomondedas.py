@@ -1,6 +1,7 @@
 import streamlit as st
 import hydralit_components as hc
 
+
 def Criptomonedas():
     a = 'Análisis Técnico'
     b = 'Modelos'
@@ -38,3 +39,25 @@ def Criptomonedas():
 
     elif chosen_tab == b:
         pass
+
+    import streamlit as st
+    import yfinance as yf
+    import plotly.graph_objs as go
+    import pandas as pd
+
+    # Función para obtener los datos de cierre de las criptomonedas seleccionadas
+    start = "2023-05-01"
+    end = "2024-05-01"
+    def obtener_datos_cierre(symbols, c_start, c_end):
+        data = yf.download(symbols, start=c_start, end=c_end, interval="1wk")
+        return data['Close']
+
+    # Definir los símbolos de criptomonedas disponibles
+    criptomonedas = pd.read_csv('././data/db/criptomonedas.csv')
+    cripto_option = st.sidebar.selectbox('Selecciona un criptomoneda', criptomonedas['Símbolo'])
+    
+
+
+
+
+
