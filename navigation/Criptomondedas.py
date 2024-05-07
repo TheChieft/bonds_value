@@ -7,7 +7,7 @@ def Criptomonedas():
 
     tabs = [
         a,
-        b,
+        b
     ]
 
     option_data = [
