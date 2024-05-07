@@ -2,6 +2,7 @@ import streamlit as st
 from navigation.Acciones import Acciones
 from navigation.Principal import Principal
 from navigation.Criptomondedas import Criptomonedas
+from navigation.Bonds import Bonds
 from components.footer import footer_style
 import hydralit_components as hc
 
@@ -88,7 +89,7 @@ if chosen_tab == principal:
     Principal()
 
 if chosen_tab == bonos:
-    pass
+    Bonds()
 
 if chosen_tab == acciones:
     Acciones()
