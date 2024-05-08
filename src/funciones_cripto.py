@@ -1,7 +1,7 @@
 import yfinance as yf
 import pandas as pd
 
-def obtener_datos_cierre(symbols, c_start, c_end, intentos_maximos=3):
+def obtener_datos_cierre(symbols, c_start, c_end, intentos_maximos=3, intervalo = "1wk"):
     """
     Función que descarga datos de cierre de criptomonedas de Yahoo Finance.
 
@@ -18,7 +18,7 @@ def obtener_datos_cierre(symbols, c_start, c_end, intentos_maximos=3):
     for intento in range(intentos_maximos):
         try:
         # Descargaa datos 
-            data = yf.download(symbols, start=c_start, end=c_end, interval="1wk")
+            data = yf.download(symbols, start=c_start, end=c_end, interval= intervalo)
             return data['Close']
         except Exception as e: 
             print(f"Intento {intento+1}: Error al descargar datos: {e}")
