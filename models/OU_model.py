@@ -3,8 +3,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import matplotlib.dates as mdates
+import plotly.graph_objects as go
 import streamlit as st
 from src.funciones_cripto import obtener_datos_cierre
+
 
 fecha_actual = pd.Timestamp('today')
 fecha_inicio = fecha_actual - pd.DateOffset(weeks=1)
@@ -59,7 +61,7 @@ def model_ou():
         estimationLSE.append(np.mean(simulated_data))
 
     # Grafico
-    import plotly.graph_objects as go
+
 
 # Assuming your data is in criptosi (real prices) and estimationLSE (predicted prices)
 
@@ -69,7 +71,8 @@ def model_ou():
         y=criptosi,
         mode='lines',
         name='Precios reales',
-        line=dict(color='red', width=1),
+        line=dict( width=1),
+        opacity= 0.9
     )
 
     trace2 = go.Scatter(
@@ -77,7 +80,8 @@ def model_ou():
         y=estimationLSE,
         mode='lines',
         name='Precios predichos',
-        line=dict(color='blue', width=1),
+        line=dict(width=1),
+        opacity= 0.9
     )
 
     # Create the figure
