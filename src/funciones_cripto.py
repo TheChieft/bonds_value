@@ -1,6 +1,7 @@
 import yfinance as yf
 import pandas as pd
-
+import requests
+# Funcion para obtener datos de cierre 
 def obtener_datos_cierre(symbols, c_start, c_end, intentos_maximos=3, intervalo = "1wk"):
     """
     Función que descarga datos de cierre de criptomonedas de Yahoo Finance.
@@ -25,3 +26,33 @@ def obtener_datos_cierre(symbols, c_start, c_end, intentos_maximos=3, intervalo 
             if intento == intentos_maximos - 1: 
                 print(f"Descarga fallida después de {intentos_maximos} intentos.")
                 return pd.DataFrame()
+# funcion para obtener métricas de la criptomoneda requerida
+def descargar_info_cripto(api_key, cripto_symbol):
+    url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest"
+    headers = {
+        'Accepts': 'application/json',
+        'X-CMC_PRO_API_KEY': api_key,
+    }
+    parameters = {
+        'symbol': cripto_symbol  # Cambiado de 'id' a 'symbol'
+    }
+    response = requests.get(url, headers=headers, params=parameters)
+    if response.status_code == 200:
+        data = response.json()
+        cripto_data = data['data'][cripto_symbol]  # Acceder por el símbolo de la cripto
+
+        # Building the dataframe with symbol included
+        df = pd.DataFrame([{
+            'Market Cap': cripto_data['quote']['USD']['market_cap'],
+            '24h Volume': cripto_data['quote']['USD']['volume_24h'],
+            'Price': cripto_data['quote']['USD']['price'],
+            'Percent Change 1h': cripto_data['quote']['USD']['percent_change_1h'],
+            'Percent Change 24h': cripto_data['quote']['USD']['percent_change_24h'],
+            'Percent Change 7d': cripto_data['quote']['USD']['percent_change_7d'],
+            'Last Updated': cripto_data['quote']['USD']['last_updated'],
+            'Symbol': cripto_symbol  # Cambiado de 'Name' a 'Symbol'
+        }])
+        return df
+    else:
+        print("Error en la solicitud:", response.status_code)
+        return None

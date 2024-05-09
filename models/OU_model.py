@@ -115,7 +115,24 @@ def model_ou():
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
     )
+    st.markdown(
+    """
+    <style>
+        /* Centra el contenedor del gráfico */
+        .chart-container {
+            width: 600px; /* Ancho deseado del contenedor */
+            margin: 0 auto; /* Margen automático horizontal para centrar */
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+    # Coloca el gráfico dentro del contenedor
+    st.markdown('<div class="chart-container">', unsafe_allow_html=True)
     st.plotly_chart(fig, use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+    #st.plotly_chart(fig, use_container_width=True)
 
     # RMSE 
     LSEsse = []
