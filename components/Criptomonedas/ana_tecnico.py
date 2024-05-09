@@ -3,6 +3,7 @@ import yfinance as yf
 import plotly.graph_objs as go
 import pandas as pd
 from src.funciones_cripto import obtener_datos_cierre
+from src.funciones_cripto import descargar_info_cripto
 
 fecha_actual = pd.Timestamp('today')
 fecha_inicio = fecha_actual - pd.DateOffset(years=3)
@@ -87,13 +88,65 @@ def ana_tecnico_cripto():
 
     range_x = [fecha_actual - pd.DateOffset(years=1), fecha_actual]
     col1, col2 = st.columns([250,500])
-
+#----------------------------------------------------------------------------------------------------
     # Métricas criptomoneda
-    
+    api_key = '2a257bf9-595e-40fe-b9bd-911acadcc922'
+    cripto_symbol = cripto_option[0].replace('-USD','')
+    df = descargar_info_cripto(api_key, cripto_symbol)
+
+    #-------------------------------------------------------------------------------------
     with col1:
         st.write("""
     <h1 style='text-align: center; font-size: 25px;'>Estadísticas</h1>
 """, unsafe_allow_html=True)
+
+        # Definir el estilo del métrico
+        st.markdown(
+            """
+            <style>
+                .metric {
+                    border: 2px solid rgba(0, 201, 255, 1); /* Borde de color azul claro con transparencia */
+                    border-radius: 10px;
+                    padding: 20px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+                    background-color: transparent; /* Fondo transparente */
+                }
+                .metric .metric-value {
+                    font-size: 24px; /* Tamaño del texto más pequeño */
+                    color: white; /* Color blanco para el valor */
+                }
+                .metric .metric-name {
+                    font-size: 16px; /* Tamaño del texto más pequeño */
+                    color: white; /* Color blanco para el nombre */
+                    margin-top: 10px;
+                }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+
+
+        # Crear un métrico decorado
+        col1_1,col1_2 = st.columns(2)
+        #metricas
+        with col1_1:
+            st.markdown(
+                f"""
+                <div class="metric">
+                    <div class="metric-value">{'Precio'}</div>
+                    <div class="metric-name">{round(df['Price'][0],2)}</div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )             
+        col1_1.metric('Capitalización del mercado',round(df['Market Cap'][0],2))
+        col1_1.metric('24h Volume',round(df['24h Volume'][0],2))
+
+        col1_2.metric('Percent Change 1h',round(df['Percent Change 1h'][0],2))
+        col1_2.metric('Percent Change 24h',round(df['Percent Change 24h'][0],2))
+        col1_2.metric('Percent Change 7d',round(df['Percent Change 7d'][0],2))
+
     with col2:
         st.write("""
     <h1 style='text-align: center; font-size: 25px;'> Precios Criptos </h1>

@@ -3,8 +3,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import matplotlib.dates as mdates
+import plotly.graph_objects as go
 import streamlit as st
 from src.funciones_cripto import obtener_datos_cierre
+
 
 fecha_actual = pd.Timestamp('today')
 fecha_inicio = fecha_actual - pd.DateOffset(weeks=1)
@@ -12,7 +14,7 @@ criptomonedas = pd.read_csv('././data/db/criptomonedas.csv') # contiene simbolo 
 range_x = [fecha_actual - pd.DateOffset(days=1), fecha_actual] # inrervalo de tiempo para visualizar la predicción 
 
 # Modelo Ornstein Uhlenbeck
-def simulate_ou_process4(mu, theta, sigma, X0, n_simulations = 1000, dt=1):
+def simulate_ou_process4(mu, theta, sigma, X0, n_simulations = 4000, dt=1):
     X = []
     for i in range(n_simulations):
         noise = np.random.normal()
@@ -59,17 +61,14 @@ def model_ou():
         estimationLSE.append(np.mean(simulated_data))
 
     # Grafico
-    import plotly.graph_objects as go
 
-# Assuming your data is in criptosi (real prices) and estimationLSE (predicted prices)
-
-# Create the line traces
     trace1 = go.Scatter(
         x=criptosi.index,
         y=criptosi,
         mode='lines',
         name='Precios reales',
-        line=dict(color='red', width=1),
+        line=dict( width=1),
+        opacity= 0.9
     )
 
     trace2 = go.Scatter(
@@ -77,7 +76,8 @@ def model_ou():
         y=estimationLSE,
         mode='lines',
         name='Precios predichos',
-        line=dict(color='blue', width=1),
+        line=dict(width=1),
+        opacity= 0.9
     )
 
     # Create the figure
@@ -115,6 +115,43 @@ def model_ou():
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
     )
+    st.markdown(
+    """
+    <style>
+        /* Centra el contenedor del gráfico */
+        .chart-container {
+            width: 600px; /* Ancho deseado del contenedor */
+            margin: 0 auto; /* Margen automático horizontal para centrar */
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+    # Coloca el gráfico dentro del contenedor
+    st.markdown('<div class="chart-container">', unsafe_allow_html=True)
     st.plotly_chart(fig, use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+    #st.plotly_chart(fig, use_container_width=True)
+
+    # RMSE 
+    LSEsse = []
+    for i, j in zip(y_data[1:], estimationLSE[:-1]):
+        LSEsse.append((i-j)**2)
+    LSE_MSE = sum(LSEsse)/len(LSEsse)
+    LSE_RMSE = np.sqrt(LSE_MSE)
+    LSE_RMSE = round(LSE_RMSE,2)
+    # R²
+    def r_squared(y_true, y_pred):
+        ss_res = np.sum((y_true - y_pred) ** 2)
+        ss_tot = np.sum((y_true - np.mean(y_true)) ** 2)
+        r2 = 1 - (ss_res / ss_tot)
+        return round(r2,3)
+    r_squared(criptosi[1:],estimationLSE[:-1])
+
+    col1, col2, col3 = st.columns(3)
 
     
+    col1.metric('Precio siguiente', f'{round(estimationLSE[-1],2)}', f'{round(criptosi[-1]-estimationLSE[-1],2)}')
+    col2.metric('RMSE', f'{LSE_RMSE}')
+    col3.metric('R²',f'{r_squared(criptosi,estimationLSE)}')
