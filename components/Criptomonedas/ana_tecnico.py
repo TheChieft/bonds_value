@@ -133,7 +133,7 @@ def ana_tecnico_cripto():
                 margin-bottom: 70px;  # Añade un margen en la parte inferior de cada métrica
             }
             .metric-title {
-                border-bottom: 2px solid #00c9ff;
+                border-bottom: 2px solid #37c6ff;
                 padding-bottom: 5px;
                 margin-bottom: 10px;  # Espacio adicional después del título
             }
