@@ -23,7 +23,24 @@ def simulate_ou_process4(mu, theta, sigma, X0, n_simulations = 1000, dt=1):
     return X
 
 def model_ou():
+    st.markdown(
+    """
+    <style>
+        /* Estilo para cambiar la fuente, el tamaño y centrar el texto */
+        .custom-text {
+            font-family: Arial, sans-serif; /* Cambia la fuente a Arial o cualquier otra fuente que desees */
+            font-size: 17px; /* Cambia el tamaño del texto a 20px o cualquier otro tamaño que desees */
+            text-align: center; /* Centra el texto horizontalmente */
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+    )
+    st.divider()
+    # Utiliza st.write() para mostrar texto con el estilo personalizado
+    st.markdown('<p class="custom-text">El modelo de Ornstein-Uhlenbeck es usado en el ámbito de la estadística y la teoría de probabilidad para modelar la evolución de un proceso estocástico en el tiempo. Este modelo describe cómo una variable aleatoria (el precio de un activo) cambia con el tiempo, mostrando una tendencia hacia un cierto valor central o de equilibrio, al mismo tiempo que experimenta fluctuaciones aleatorias.</p>', unsafe_allow_html=True)
     # opciones cripto
+    st.divider()
     cripto_option = st.sidebar.selectbox('Selecciona una criptomoneda', (criptomonedas['Símbolo']+ '-USD')) 
     data = obtener_datos_cierre(cripto_option, fecha_inicio, fecha_actual,intervalo="5m")
     # Se resaga la data
@@ -90,7 +107,7 @@ def model_ou():
         xaxis=dict(
             tickcolor='white',
             tickfont=dict(color='white'),
-            title=dict(text='Time Steps', font=dict(color='white')),
+            title=dict(text='TIempo', font=dict(color='white')),
             showgrid=True,
             ticks='outside',
             linecolor='white',
@@ -99,14 +116,14 @@ def model_ou():
         yaxis=dict(
             tickcolor='white',
             tickfont=dict(color='white'),
-            title=dict(text='Value', font=dict(color='white')),
+            title=dict(text='Precio', font=dict(color='white')),
             showgrid=True,
             ticks='outside',
             linecolor='white',
             gridcolor='rgba(255, 255, 255, 0.1)',
         ),
         title=dict(
-            text='Ornstein-Uhlenbeck Process Simulation',
+            text=f'Ornstein-Uhlenbeck Process Simulation {cripto_option}',
             y=1,
             x=0.5,
             xanchor='center',
@@ -137,7 +154,7 @@ def model_ou():
         r2 = 1 - (ss_res / ss_tot)
         return round(r2,3)
     r_squared(criptosi[1:],estimationLSE[:-1])
-    col01, col02 = st.columns(2)
+    col01, col02 = st.columns([400,600])
     with col02:
         col1, col2, col3 = st.columns(3)
         col1.metric('Precio siguiente', f'{round(estimationLSE[-1],2)}', f'{round(criptosi[-1]-estimationLSE[-1],2)}')
@@ -148,4 +165,4 @@ def model_ou():
         resultados = pd.DataFrame()
         resultados['Precios Reales'] = criptosi
         resultados['Precios Predichos'] = estimationLSE
-        st.dataframe(resultados)
+        st.dataframe(resultados, width= 420, height= 520)

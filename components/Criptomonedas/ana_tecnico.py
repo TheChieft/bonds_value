@@ -11,6 +11,24 @@ criptomonedas = pd.read_csv('././data/db/criptomonedas.csv') # contiene simbolo 
 
 # Función que contiene el análisis tecnico de las criptomonedas
 def ana_tecnico_cripto():
+    st.markdown(
+    """
+    <style>
+        /* Estilo para cambiar la fuente, el tamaño y centrar el texto */
+        .custom-text {
+            font-family: Arial, sans-serif; /* Cambia la fuente a Arial o cualquier otra fuente que desees */
+            font-size: 17px; /* Cambia el tamaño del texto a 20px o cualquier otro tamaño que desees */
+            text-align: center; /* Centra el texto horizontalmente */
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+    )
+    st.divider()
+    # Utiliza st.write() para mostrar texto con el estilo personalizado
+    st.markdown('<p class="custom-text">En este apartado podrás elegir una canntidad determinada de criptomonedas y ver su comportamiento a lo largo del tiempo, observando las principales métricas de la primera criptomoneda seleccionada.</p>', unsafe_allow_html=True)
+    # opciones cripto
+    st.divider()
     cripto_option = st.sidebar.multiselect('Selecciona las criptomonedas', criptomonedas['Símbolo']+ '-USD', ['BTC-USD']) 
     # Función Grafico
     def grafico_precios_cripto(cripto_seleccionadas):
@@ -100,47 +118,12 @@ def ana_tecnico_cripto():
     <h1 style='text-align: center; font-size: 25px;'>Estadísticas</h1>
 """, unsafe_allow_html=True)
 
-        # Definir el estilo del métrico
-        st.markdown(
-            """
-            <style>
-                .metric {
-                    border: 2px solid rgba(0, 201, 255, 1); /* Borde de color azul claro con transparencia */
-                    border-radius: 10px;
-                    padding: 20px;
-                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                    font-family: 'Helvetica Neue', Helvetica, sans-serif;
-                    background-color: transparent;
-                     /* Fondo transparente */
-                }
-                .metric .metric-value {
-                    font-size: 24px; /* Tamaño del texto más pequeño */
-                    color: white; /* Color blanco para el valor */
-                }
-                .metric .metric-name {
-                    font-size: 16px; /* Tamaño del texto más pequeño */
-                    color: white; /* Color blanco para el nombre */
-                    margin-top: 10px;
-                }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
-
-
         # Crear un métrico decorado
         col1_1,col1_2 = st.columns(2)
         #metricas
-        with col1_1:
-            st.markdown(
-                f"""
-                <div class="metric">
-                    <div class="metric-value">{'Precio'}</div>
-                    <div class="metric-name">{round(df['Price'][0],2)}</div>
-                </div>
-                """,
-                unsafe_allow_html=True
-            )             
+        st.divider()
+        col1_1.metric('Precio',round(df['Price'][0],2))
+        st.divider()          
         col1_1.metric('Capitalización del mercado',round(df['Market Cap'][0],2))
         col1_1.metric('24h Volume',round(df['24h Volume'][0],2))
 
