@@ -2,6 +2,7 @@ import streamlit as st
 import hydralit_components as hc
 from components.Acciones.ana_tecnico import analisis_tec
 from components.Acciones.valoracion import valoracion
+from components.Acciones.modelo import model
 
 
 def Acciones():
@@ -46,5 +47,5 @@ def Acciones():
         valoracion()
 
     elif chosen_tab == c:
-        pass
+        model()
 # -------------------------------------------------------------

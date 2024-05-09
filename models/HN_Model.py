@@ -183,6 +183,7 @@ class HNGarch(object):
         beta = -log((1-beta)/beta)
 
         par = [omega, alpha, beta, gam, lam]
+
         res = minimize(llhngarch, par, args=(r_t, r, False), method='L-BFGS-B')
 
         # computing standard errors of garch model through the inverse of the hessian matrix
@@ -396,6 +397,71 @@ class HNGarch(object):
             return s
         else:
             return s[-1]
+
+    def BACKTESTING(self, n_steps=1, vec=False):
+        '''
+
+        Parameters
+        ----------
+        n_steps : int, optional
+            number of future periods to forecast. The default is 252 (trading days in a year).
+        vec : bool, optional
+            if True returns the whole price process. The default is False.
+
+        Returns
+        -------
+        float or list
+            returns the terminal price, if vec = True returns the whole price process.
+
+        '''
+
+        params = [self.omega, self.alpha, self.beta,
+                  self.gamma_star, self.p_lambda]
+
+        h_t = self.h_t0
+        z_star = normal(0, 1)
+        s_t = log(self.timeseries[0])
+        s = []
+
+        for i in range(n_steps):
+
+            # volatility process
+            h_t = params[0] + params[2] * h_t + params[1] * \
+                pow(z_star - params[3] * sqrt(h_t), 2)
+            # logreturns process
+            z_star = normal(0, 1)
+            s_t = s_t + self.r_f - 0.5 * h_t + sqrt(h_t) * z_star
+
+            s.append(exp(s_t))
+
+        if vec:
+            return s
+        else:
+            return s[-1]
+
+    def montecarlo_sim2(self, n_reps=5e3, n_steps=1):
+        '''
+
+        Parameters
+        ----------
+        n_reps : int, optional
+            number of simulations. The default is 5e3.
+        n_steps : int, optional
+            number of future periods to forecast. The default is 252 (trading days in a year).
+
+        Returns
+        -------
+        float
+            average terminal value of the asset.
+
+        '''
+        res = []
+
+        for i in np.arange(n_reps):
+            s = HNGarch.BACKTESTING(self, n_steps, vec=False)
+            res.append(s)
+
+        return sum(res)/n_reps
 
     def montecarlo_sim(self, n_reps=5e3, n_steps=252):
         '''
