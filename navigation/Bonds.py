@@ -2,16 +2,19 @@ import streamlit as st
 import hydralit_components as hc
 from components.bonds.ZeroBonds import ZeroBonds
 from components.bonds.CuponBonds import CuponBonds
+from components.bonds.Calculadora import CalculadoraBonos
 import time
 
 
 def Bonds():
     TYPE_1 = 'Bonos con Cupón'
     TYPE_2 = 'Bonos Cero Cupón'
+    TYPE_3 = 'Calculadora de bonos Simple'
     
     tabs = [
         TYPE_1,
         TYPE_2,
+        TYPE_3
     ]
     
     # 2 Columnas
@@ -20,6 +23,7 @@ def Bonds():
     option_data = [
         {'icon': "", 'label': TYPE_1},
         {'icon': "", 'label': TYPE_2},
+        {'icon': "", 'label': TYPE_3}
     ]
     
     theme = {
@@ -45,6 +49,8 @@ def Bonds():
         CuponBonds()
     elif chosen_tab == TYPE_2:
         ZeroBonds()
+    elif chosen_tab == TYPE_3:
+        CalculadoraBonos()
         
     
     
