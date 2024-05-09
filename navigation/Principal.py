@@ -7,7 +7,6 @@ from components.text import text
 
 def Principal():
 
-
     # Encabezado
     st.title("¡Bienvenidos a nuestra aplicación DeFi!")
 
@@ -35,9 +34,10 @@ def Principal():
     equipo = [
         {"nombre": "Jorfan Vargas", "github": "Jorfanv"},
         {"nombre": "Andrés Yañez", "github": "TheChieft"},
-        {"nombre": "Juan David", "github": "juan1031"}
+        {"nombre": "Juan David Bocanegra", "github": "juan1031"}
     ]
 
     # Mostrar el equipo
     for miembro in equipo:
-        st.write(f"- **{miembro['nombre']}** [![GitHub](https://img.shields.io/badge/GitHub-{miembro['github']}-blue?style=flat&logo=github)](https://github.com/{miembro['github']})")
+        st.write(
+            f"- **{miembro['nombre']}** [![GitHub](https://img.shields.io/badge/GitHub-{miembro['github']}-blue?style=flat&logo=github)](https://github.com/{miembro['github']})")

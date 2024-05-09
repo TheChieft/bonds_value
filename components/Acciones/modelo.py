@@ -66,5 +66,5 @@ def model():
 
     with mitad:
 
-        st.subheader('HN-Model')
+        st.subheader(f'HN-Model de {selected_ticker}')
         st.plotly_chart(modelo)

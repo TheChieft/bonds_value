@@ -9,7 +9,7 @@ class backt_predict:
     def __init__(self, ts):
         self.ts = ts
 
-    def backtesting(self, n_reps=10000, n_teps=1):
+    def backtesting(self, n_reps=1000, n_teps=1):
 
         ts = self.ts
 
@@ -50,7 +50,7 @@ class backt_predict:
 
         return backtest_results
 
-    def prediction(self, number_scenarios=10000, n_steps=252, vec=True):
+    def prediction(self, number_scenarios=1000, n_steps=252, vec=True):
 
         ts = self.ts
 

@@ -43,9 +43,9 @@ def Acciones():
     if chosen_tab == a:
         analisis_tec()
 
-    elif chosen_tab == b:
+    if chosen_tab == b:
         valoracion()
 
-    elif chosen_tab == c:
+    if chosen_tab == c:
         model()
 # -------------------------------------------------------------
