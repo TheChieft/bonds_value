@@ -110,7 +110,8 @@ def ana_tecnico_cripto():
                     padding: 20px;
                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                     font-family: 'Helvetica Neue', Helvetica, sans-serif;
-                    background-color: transparent; /* Fondo transparente */
+                    background-color: transparent;
+                     /* Fondo transparente */
                 }
                 .metric .metric-value {
                     font-size: 24px; /* Tamaño del texto más pequeño */
