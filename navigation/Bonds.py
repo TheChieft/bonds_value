@@ -2,6 +2,7 @@ import streamlit as st
 import hydralit_components as hc
 from components.bonds.ZeroBonds import ZeroBonds
 from components.bonds.CuponBonds import CuponBonds
+import time
 
 
 def Bonds():
@@ -12,6 +13,9 @@ def Bonds():
         TYPE_1,
         TYPE_2,
     ]
+    
+    # 2 Columnas
+    
     
     option_data = [
         {'icon': "", 'label': TYPE_1},
@@ -41,5 +45,6 @@ def Bonds():
         CuponBonds()
     elif chosen_tab == TYPE_2:
         ZeroBonds()
+        
     
     
