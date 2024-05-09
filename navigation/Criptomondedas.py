@@ -1,5 +1,10 @@
 import streamlit as st
 import hydralit_components as hc
+import yfinance as yf
+import plotly.graph_objs as go
+import pandas as pd
+from components.Criptomonedas.ana_tecnico import ana_tecnico_cripto
+from models.OU_model import model_ou
 
 def Criptomonedas():
     a = 'Análisis Técnico'
@@ -34,7 +39,12 @@ def Criptomonedas():
         horizontal_orientation=True)
 
     if chosen_tab == a:
-        pass
+        ana_tecnico_cripto()
 
     elif chosen_tab == b:
-        pass
+        model_ou()
+
+
+
+
+
