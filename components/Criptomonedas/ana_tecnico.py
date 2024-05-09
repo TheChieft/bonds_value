@@ -114,22 +114,68 @@ def ana_tecnico_cripto():
 
     #-------------------------------------------------------------------------------------
     with col1:
-        st.write("""
-    <h1 style='text-align: center; font-size: 25px;'>Estadísticas</h1>
+        st.write(f"""
+    <h1 style='text-align: center; font-size: 25px;'>Métricas {cripto_option[0]}</h1>
 """, unsafe_allow_html=True)
 
-        # Crear un métrico decorado
-        col1_1,col1_2 = st.columns(2)
-        #metricas
-        st.divider()
-        col1_1.metric('Precio',round(df['Price'][0],2))
-        st.divider()          
-        col1_1.metric('Capitalización del mercado',round(df['Market Cap'][0],2))
-        col1_1.metric('24h Volume',round(df['24h Volume'][0],2))
+                # Crear un métrico decorado
+        st.markdown("""
+            <style>
+            .big-font {
+                font-family: 'Helvetica';
+                font-size:15px !important;
+                color: #ffffff;
+            }
+            .metric-value {
+                font-family: 'Helvetica';
+                font-size:25px !important;
+                color: #ffffff;
+                margin-bottom: 70px;  # Añade un margen en la parte inferior de cada métrica
+            }
+            .metric-title {
+                border-bottom: 2px solid #37c6ff;
+                padding-bottom: 5px;
+                margin-bottom: 10px;  # Espacio adicional después del título
+            }
+            .container {
+                margin-bottom: 30px;  # Espacio entre contenedores de métricas
+            }
+            </style>
+            """, unsafe_allow_html=True)
 
-        col1_2.metric('Percent Change 1h',round(df['Percent Change 1h'][0],2))
-        col1_2.metric('Percent Change 24h',round(df['Percent Change 24h'][0],2))
-        col1_2.metric('Percent Change 7d',round(df['Percent Change 7d'][0],2))
+        # Formateo de números grandes para mejor legibilidad
+        def format_large_number(value):
+            if value >= 1e12:
+                return f"${value / 1e12:.2f} T"
+            elif value >= 1e9:
+                return f"${value / 1e9:.2f} B"
+            elif value >= 1e6:
+                return f"${value / 1e6:.2f} M"
+            else:
+                return f"${value:.2f}"
+
+        # Creación de columnas con estilo
+        col1_1, col1_2 = st.columns(2)
+
+        with col1_1:
+            st.markdown('<div class="metric-title big-font">Precio</div>', unsafe_allow_html=True)
+            st.markdown('<div class="metric-value">${:.2f}</div>'.format(df['Price'][0]), unsafe_allow_html=True)
+
+            st.markdown('<div class="metric-title big-font">Capitalización del mercado</div>', unsafe_allow_html=True)
+            st.markdown('<div class="metric-value">{}</div>'.format(format_large_number(df['Market Cap'][0])), unsafe_allow_html=True)
+
+            st.markdown('<div class="metric-title big-font">24h Volumen</div>', unsafe_allow_html=True)
+            st.markdown('<div class="metric-value">{}</div>'.format(format_large_number(df['24h Volume'][0])), unsafe_allow_html=True)
+
+        with col1_2:
+            st.markdown('<div class="metric-title big-font">Cambio % 1h</div>', unsafe_allow_html=True)
+            st.markdown('<div class="metric-value">{:.2f}%</div>'.format(df['Percent Change 1h'][0]), unsafe_allow_html=True)
+
+            st.markdown('<div class="metric-title big-font">Cambio % 24h</div>', unsafe_allow_html=True)
+            st.markdown('<div class="metric-value">{:.2f}%</div>'.format(df['Percent Change 24h'][0]), unsafe_allow_html=True)
+
+            st.markdown('<div class="metric-title big-font">Cambio % 7d</div>', unsafe_allow_html=True)
+            st.markdown('<div class="metric-value">{:.2f}%</div>'.format(df['Percent Change 7d'][0]), unsafe_allow_html=True)
 
     with col2:
         st.write("""

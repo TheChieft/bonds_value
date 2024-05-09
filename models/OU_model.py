@@ -23,6 +23,10 @@ def simulate_ou_process4(mu, theta, sigma, X0, n_simulations = 1000, dt=1):
     return X
 
 def model_ou():
+    @st.cache_resource
+    def grafico():
+        return st.plotly_chart(fig, use_container_width=False)
+    
     st.markdown(
     """
     <style>
@@ -78,7 +82,7 @@ def model_ou():
         estimationLSE.append(np.mean(simulated_data))
 
     # Grafico
-
+    #def grafico():
     trace1 = go.Scatter(
         x=criptosi.index,
         y=criptosi,
@@ -102,8 +106,8 @@ def model_ou():
 
     # Update layout with desired styling
     fig.update_layout(
-        width =900,
-        height=400,
+        width =1000,
+        height=450,
         xaxis=dict(
             tickcolor='white',
             tickfont=dict(color='white'),
@@ -136,10 +140,13 @@ def model_ou():
 
         
     )
+
+
+    
     coll1, coll2, coll3 = st.columns([150,700,150])
     with coll2:
-        st.plotly_chart(fig, use_container_width=False)
-
+        grafico()
+    st.divider()
     # RMSE 
     LSEsse = []
     for i, j in zip(y_data[1:], estimationLSE[:-1]):
@@ -165,4 +172,4 @@ def model_ou():
         resultados = pd.DataFrame()
         resultados['Precios Reales'] = criptosi
         resultados['Precios Predichos'] = estimationLSE
-        st.dataframe(resultados, width= 420, height= 520)
+        st.dataframe(resultados, width= 450, height= 520)
